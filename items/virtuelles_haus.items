@@ -32,7 +32,7 @@ DateTime Haus_Uhrzeit           "Uhrzeit [%1$tH:%1$tM]"                 (gVH_Hau
 Group  Wohnzimmer_Farblampe     "Farblampe"            (gVH_Wohnzimmer)              ["Lightbulb"]
 Color  Wohnzimmer_Farblampe_Farbe "Farbe"              (Wohnzimmer_Farblampe, gVH_Lichter) ["Control", "Color"]
 Dimmer Wohnzimmer_Farblampe_Farbtemperatur "Farbtemperatur [%d %%]" (Wohnzimmer_Farblampe, gVH_Dimmbar) ["Control", "ColorTemperature"]
-String Wohnzimmer_Farblampe_Effekt "Effekt [%s]"       (Wohnzimmer_Farblampe)     ["Control", "Mode"]
+String Wohnzimmer_Farblampe_Effekt "Effekt [%s]"       (Wohnzimmer_Farblampe)     ["Control", "Mode"] { commandDescription=""[options="kein=kein,Kerze=Kerze,Regenbogen=Regenbogen"] }
 
 Group  Wohnzimmer_Deckenlampe   "Deckenlampe"          (gVH_Wohnzimmer)              ["Lightbulb"]
 Dimmer Wohnzimmer_Deckenlampe_Helligkeit "Helligkeit [%d %%]" (Wohnzimmer_Deckenlampe, gVH_Dimmbar) ["Control", "Brightness"]
@@ -52,11 +52,11 @@ Dimmer Wohnzimmer_Jalousie_Lamellen "Lamellenwinkel [%d %%]" (Wohnzimmer_Jalousi
 
 Group  Wohnzimmer_Fenster       "Fenster"              (gVH_Wohnzimmer)              ["Window"]
 Contact Wohnzimmer_Fenster_Kontakt "Fensterkontakt [%s]" (Wohnzimmer_Fenster, gVH_Fenster) ["Status", "OpenState"]
-String Wohnzimmer_Fenster_Motor "Fenstermotor [MAP(fenster.map):%s]" (Wohnzimmer_Fenster) ["Control", "Opening"]
+String Wohnzimmer_Fenster_Motor "Fenstermotor [MAP(fenster.map):%s]" (Wohnzimmer_Fenster) ["Control", "Opening"] { commandDescription=""[options="geschlossen=zu,gekippt=kippen,offen=auf"] }
 
 Group  Wohnzimmer_Thermostat    "Thermostat Fußbodenheizung" (gVH_Wohnzimmer)        ["Thermostat"]
 Number:Temperature Wohnzimmer_Thermostat_Ist  "Raumtemperatur [%.1f °C]" (Wohnzimmer_Thermostat, gVH_Innen) ["Measurement", "Temperature"] { unit="°C" }
-Number:Temperature Wohnzimmer_Thermostat_Soll "Solltemperatur [%.1f °C]" (Wohnzimmer_Thermostat) ["Setpoint", "Temperature"] { unit="°C" }
+Number:Temperature Wohnzimmer_Thermostat_Soll "Solltemperatur [%.1f °C]" (Wohnzimmer_Thermostat) ["Setpoint", "Temperature"] { unit="°C", stateDescription=""[min="16", max="26", step="0.5"] }
 Switch Wohnzimmer_Thermostat_Heizen "Heizen [%s]"      (Wohnzimmer_Thermostat)    ["Status", "Heating"]
 
 Group  Wohnzimmer_Raumluft      "Raumluftsensor"       (gVH_Wohnzimmer)              ["AirQualitySensor"]
@@ -71,18 +71,18 @@ Switch Wohnzimmer_Soundsystem_Stumm "Stumm"            (Wohnzimmer_Soundsystem) 
 
 Group  Wohnzimmer_Fernseher     "Fernseher"            (gVH_Wohnzimmer)              ["Television"]
 Switch Wohnzimmer_Fernseher_Schalter "Fernseher"       (Wohnzimmer_Fernseher)     ["Switch", "Power"]
-Number Wohnzimmer_Fernseher_Kanal "Programmplatz [%d]" (Wohnzimmer_Fernseher)     ["Control", "Channel"]
-String Wohnzimmer_Fernseher_Eingang "Eingang [%s]"     (Wohnzimmer_Fernseher)     ["Control", "Mode"]
+Number Wohnzimmer_Fernseher_Kanal "Programmplatz [%d]" (Wohnzimmer_Fernseher)     ["Control", "Channel"] { stateDescription=""[min="1", max="99", step="1"] }
+String Wohnzimmer_Fernseher_Eingang "Eingang [%s]"     (Wohnzimmer_Fernseher)     ["Control", "Mode"] { commandDescription=""[options="TV=TV,HDMI1=HDMI 1,HDMI2=HDMI 2"] }
 
 // ============================ Küche ============================
 Group  Kueche_Backofen          "Backofen"             (gVH_Kueche)                  ["Oven"]
 Switch Kueche_Backofen_Schalter "Backofen"             (Kueche_Backofen)          ["Switch", "Power"]
-Number:Temperature Kueche_Backofen_Soll "Temperatur [%.0f °C]" (Kueche_Backofen)  ["Setpoint", "Temperature"] { unit="°C" }
-String Kueche_Backofen_Modus    "Betriebsart [%s]"     (Kueche_Backofen)          ["Control", "Mode"]
+Number:Temperature Kueche_Backofen_Soll "Temperatur [%.0f °C]" (Kueche_Backofen)  ["Setpoint", "Temperature"] { unit="°C", stateDescription=""[min="50", max="250", step="10"] }
+String Kueche_Backofen_Modus    "Betriebsart [%s]"     (Kueche_Backofen)          ["Control", "Mode"] { commandDescription=""[options="Umluft=Umluft,Oberhitze=Ober-/Unterhitze,Grill=Grill"] }
 DateTime Kueche_Backofen_Ende   "Fertig um [%1$tH:%1$tM]" (Kueche_Backofen)       ["Status", "Timestamp"]
 
 Group  Kueche_Herd              "Kochfeld"             (gVH_Kueche)                  ["Cooktop"]
-Number Kueche_Herd_Stufe        "Kochstufe vorn links [%d]" (Kueche_Herd)         ["Control", "Level"]
+Number Kueche_Herd_Stufe        "Kochstufe vorn links [%d]" (Kueche_Herd)         ["Control", "Level"] { stateDescription=""[min="0", max="9", step="1"] }
 
 Group  Kueche_Kuehlschrank      "Kühlschrank"          (gVH_Kueche)                  ["Refrigerator"]
 Number:Temperature Kueche_Kuehlschrank_Temperatur "Innen [%.1f °C]" (Kueche_Kuehlschrank) ["Measurement", "Temperature"] { unit="°C" }
@@ -90,7 +90,7 @@ Contact Kueche_Kuehlschrank_Tuer "Tür [%s]"            (Kueche_Kuehlschrank)   
 
 Group  Kueche_Spuelmaschine     "Spülmaschine"         (gVH_Kueche)                  ["Dishwasher"]
 Switch Kueche_Spuelmaschine_Start "Start"              (Kueche_Spuelmaschine)     ["Switch", "Power"]
-String Kueche_Spuelmaschine_Programm "Programm [%s]"   (Kueche_Spuelmaschine)     ["Control", "Mode"]
+String Kueche_Spuelmaschine_Programm "Programm [%s]"   (Kueche_Spuelmaschine)     ["Control", "Mode"] { commandDescription=""[options="Eco=Eco,Auto=Auto,Intensiv=Intensiv"] }
 Number:Time Kueche_Spuelmaschine_Rest "Restzeit [%d min]" (Kueche_Spuelmaschine)  ["Status", "Duration"] { unit="min" }
 
 Group  Kueche_Rauchmelder       "Rauchmelder"          (gVH_Kueche)                  ["SmokeDetector"]
@@ -103,8 +103,8 @@ Number:Density Schlafzimmer_Luftreiniger_Feinstaub "Feinstaub PM2.5 [%.0f µg/m�
 
 Group  Schlafzimmer_Klimaanlage "Klimaanlage"          (gVH_Schlafzimmer)            ["AirConditioner"]
 Switch Schlafzimmer_Klimaanlage_Schalter "Klimaanlage" (Schlafzimmer_Klimaanlage) ["Switch", "Power"]
-Number:Temperature Schlafzimmer_Klimaanlage_Soll "Solltemperatur [%.1f °C]" (Schlafzimmer_Klimaanlage) ["Setpoint", "Temperature"] { unit="°C" }
-String Schlafzimmer_Klimaanlage_Modus "Modus [%s]"     (Schlafzimmer_Klimaanlage) ["Control", "Mode"]
+Number:Temperature Schlafzimmer_Klimaanlage_Soll "Solltemperatur [%.1f °C]" (Schlafzimmer_Klimaanlage) ["Setpoint", "Temperature"] { unit="°C", stateDescription=""[min="16", max="26", step="0.5"] }
+String Schlafzimmer_Klimaanlage_Modus "Modus [%s]"     (Schlafzimmer_Klimaanlage) ["Control", "Mode"] { commandDescription=""[options="Kühlen=Kühlen,Lüften=Lüften,Entfeuchten=Entfeuchten"] }
 Number:Temperature Schlafzimmer_Temperatur "Temperatur [%.1f °C]" (gVH_Schlafzimmer, gVH_Innen) ["Measurement", "Temperature"] { unit="°C" }
 
 Group  Schlafzimmer_Luftbefeuchter "Luftbefeuchter"    (gVH_Schlafzimmer)            ["Humidifier"]
@@ -139,12 +139,12 @@ Contact Diele_Haustuer_Kontakt  "Haustür [%s]"         (Diele_Haustuer)        
 Switch Diele_Haustuer_Schloss   "Verriegelt"           (Diele_Haustuer)           ["Switch", "LockState"]
 
 Group  Diele_Klingel            "Klingel"              (gVH_Diele)                   ["Doorbell"]
-Switch Diele_Klingel_Taster     "Klingeln"             (Diele_Klingel)            ["Switch"]
+Switch Diele_Klingel_Taster     "Klingeln"             (Diele_Klingel)            ["Switch"] { commandDescription=""[options="ON=klingeln"] }
 DateTime Diele_Klingel_Zuletzt  "Zuletzt geklingelt [%1$td.%1$tm. %1$tH:%1$tM]" (Diele_Klingel) ["Status", "Timestamp"]
 Call   Diele_Klingel_Anruf      "Türruf [%2$s an %1$s]" (Diele_Klingel)           ["Status"]
 
 Group  Diele_Alarmanlage        "Alarmanlage"          (gVH_Diele)                   ["AlarmSystem"]
-String Diele_Alarmanlage_Modus  "Modus [MAP(alarm.map):%s]" (Diele_Alarmanlage)   ["Control", "Mode"]
+String Diele_Alarmanlage_Modus  "Modus [MAP(alarm.map):%s]" (Diele_Alarmanlage)   ["Control", "Mode"] { commandDescription=""[options="aus=aus,intern=intern,extern=extern"] }
 Switch Diele_Alarmanlage_Alarm  "Alarm [%s]"           (Diele_Alarmanlage)        ["Alarm"]
 
 // ============================ Technikraum ============================
@@ -170,7 +170,7 @@ Rollershutter Garage_Tor_Position "Garagentor [%d %%]" (Garage_Tor, gVH_Rolllaed
 
 Group  Garage_Wallbox           "Wallbox"              (gVH_Garage)                  ["EVSE"]
 Switch Garage_Wallbox_Laden     "Laden"                (Garage_Wallbox)           ["Switch", "Power"]
-Number:ElectricCurrent Garage_Wallbox_Strom "Ladestrom [%.0f A]" (Garage_Wallbox)  ["Setpoint", "Current"] { unit="A" }
+Number:ElectricCurrent Garage_Wallbox_Strom "Ladestrom [%.0f A]" (Garage_Wallbox)  ["Setpoint", "Current"] { unit="A", stateDescription=""[min="6", max="16", step="1"] }
 Number:Power Garage_Wallbox_Leistung "Ladeleistung [%.1f kW]" (Garage_Wallbox, gVH_Verbrauch) ["Measurement", "Power"] { unit="W" }
 
 Group  Garage_Auto              "E-Auto"               (gVH_Garage)                  ["Car"]
@@ -192,7 +192,7 @@ Location Garten_Maehroboter_Position "Position"        (Garten_Maehroboter)     
 
 Group  Garten_Sprinkler         "Sprinkleranlage"      (gVH_Garten)                  ["Irrigation"]
 Switch Garten_Sprinkler_Zone1   "Zone Rasen"           (Garten_Sprinkler)         ["Switch", "Water"]
-Number:Time Garten_Sprinkler_Dauer "Laufzeit [%d min]" (Garten_Sprinkler)         ["Setpoint", "Duration"] { unit="min" }
+Number:Time Garten_Sprinkler_Dauer "Laufzeit [%d min]" (Garten_Sprinkler)         ["Setpoint", "Duration"] { unit="min", stateDescription=""[min="5", max="60", step="5"] }
 
 // ==================== Saug- und Wischroboter (Erdgeschoss) ====================
 Group  Haus_Saugroboter         "Saug- und Wischroboter" (gVH_Haus)                  ["CleaningRobot"]
