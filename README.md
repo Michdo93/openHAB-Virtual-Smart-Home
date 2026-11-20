@@ -68,6 +68,7 @@ Alle Gruppen beginnen mit `gVH_`, damit sie nicht mit anderen Konfigurationen ko
 ## Installation
 
 Voraussetzung: openHAB 5 mit der MAP-Transformation (`transformation-map`).
+Für Verlaufsdiagramme zusätzlich die Persistence RRD4j (`persistence-rrd4j`).
 
 ```bash
 git clone https://github.com/Michdo93/openHAB-Virtual-Smart-Home.git
@@ -76,7 +77,12 @@ sudo cp items/*.items         /etc/openhab/items/
 sudo cp rules/*.rules         /etc/openhab/rules/
 sudo cp sitemaps/*.sitemap    /etc/openhab/sitemaps/
 sudo cp transform/*.map       /etc/openhab/transform/
+sudo cp persistence/*.persist /etc/openhab/persistence/
 ```
+
+`persistence/rrd4j.persist` speichert alle Zahlenwerte jede Minute und bei jeder
+Änderung und stellt Zustände nach einem Neustart wieder her. Abfragen über die
+REST API brauchen `serviceId=rrd4j`, solange kein Standarddienst eingestellt ist.
 
 Bei einer manuellen Installation liegen die Ordner unter `openhab/conf/` statt
 `/etc/openhab/`. Die Sitemap heißt `virtuelles_haus`
