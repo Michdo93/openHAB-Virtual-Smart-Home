@@ -257,9 +257,9 @@ Location Garage_Auto_Position "Position [%2$s°N %3$s°E]" (Garage_Auto)
     ["Status", "GeoLocation"]
 
 // ============================== Garten ==============================
-Number:Temperature Garten_Temperatur "Außentemperatur [%.1f °C]" (gVH_Garten)
-    ["Measurement", "Temperature"] { unit="°C" }
 Group Garten_Wetterstation "Wetterstation" (gVH_Garten) ["WeatherStation"]
+Number:Temperature Garten_Temperatur "Außentemperatur [%.1f °C]" (Garten_Wetterstation)
+    ["Measurement", "Temperature"] { unit="°C" }
 Number:Speed Garten_Wind "Wind [%.1f km/h]" (Garten_Wetterstation)
     ["Measurement", "Wind"] { unit="km/h" }
 Number:Length Garten_Regen "Regen heute [%.1f mm]" (Garten_Wetterstation)

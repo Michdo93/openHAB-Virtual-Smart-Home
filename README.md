@@ -42,7 +42,7 @@ Webentwickler und Designer*. Jeder installiert es auf seinem eigenen openHAB.
 | Diele | Präsenzmelder mit Zonen, Haustür mit Schloss, Klingel, Alarmanlage |
 | Technikraum | Wärmepumpe, Smart Meter, Wasserzähler, PV-Anlage |
 | Garage | Garagentor, Wallbox, E-Auto |
-| Garten | Außentemperatur, Wetterstation (Wind, Regen), Mähroboter, Sprinkler |
+| Garten | Wetterstation (Außentemperatur, Wind, Regen), Mähroboter, Sprinkler |
 | ganzes Haus | Uhrzeit, Saug- und Wischroboter mit Karte |
 
 Jedes Gerät mit mehreren Items ist eine eigene Gruppe mit semantischen Tags
