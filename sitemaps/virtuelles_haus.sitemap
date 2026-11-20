@@ -1,0 +1,118 @@
+sitemap virtuelles_haus label="Virtuelles Haus" {
+    Frame label="Überblick" {
+        Text item=Haus_Uhrzeit icon="time"
+        Text item=gVH_Innen icon="temperature"
+        Text item=Garten_Temperatur icon="temperature"
+        Text item=gVH_Lichter icon="light"
+        Text item=gVH_Fenster icon="window"
+        Text item=Technik_PV_Leistung icon="solarplant"
+        Text item=Technik_Smartmeter_Netz icon="energy"
+    }
+    Frame label="Wohnzimmer" {
+        Colorpicker item=Wohnzimmer_Farblampe_Farbe icon="colorlight"
+        Slider item=Wohnzimmer_Farblampe_Farbtemperatur icon="colorlight"
+        Selection item=Wohnzimmer_Farblampe_Effekt mappings=[kein="kein", Kerze="Kerze", Regenbogen="Regenbogen"]
+        Switch item=Wohnzimmer_Deckenlampe_Schalter icon="light"
+        Slider item=Wohnzimmer_Deckenlampe_Helligkeit icon="light"
+        Switch item=Wohnzimmer_Steckdose_Schalter icon="poweroutlet"
+        Text item=Wohnzimmer_Steckdose_Leistung icon="energy"
+        Text item=Wohnzimmer_Steckdose_Energie icon="energy"
+        Default item=Wohnzimmer_Rollladen_Position icon="rollershutter"
+        Default item=Wohnzimmer_Jalousie_Position icon="blinds"
+        Slider item=Wohnzimmer_Jalousie_Lamellen icon="blinds"
+        Text item=Wohnzimmer_Fenster_Kontakt icon="window"
+        Switch item=Wohnzimmer_Fenster_Motor mappings=[geschlossen="zu", gekippt="kippen", offen="auf"] icon="window"
+        Text item=Wohnzimmer_Thermostat_Ist icon="temperature"
+        Setpoint item=Wohnzimmer_Thermostat_Soll minValue=16 maxValue=26 step=0.5 icon="heating"
+        Text item=Wohnzimmer_Thermostat_Heizen icon="fire"
+        Text item=Wohnzimmer_Raumluft_CO2 icon="carbondioxide"
+        Text item=Wohnzimmer_Raumluft_Feuchte icon="humidity"
+        Default item=Wohnzimmer_Soundsystem_Player icon="mediacontrol"
+        Text item=Wohnzimmer_Soundsystem_Sender icon="receiver"
+        Slider item=Wohnzimmer_Soundsystem_Lautstaerke icon="soundvolume"
+        Switch item=Wohnzimmer_Soundsystem_Stumm icon="soundvolume_mute"
+        Switch item=Wohnzimmer_Fernseher_Schalter icon="screen"
+        Setpoint item=Wohnzimmer_Fernseher_Kanal minValue=1 maxValue=99 step=1 icon="screen"
+        Selection item=Wohnzimmer_Fernseher_Eingang mappings=[TV="TV", HDMI1="HDMI 1", HDMI2="HDMI 2"]
+    }
+    Frame label="Küche" {
+        Switch item=Kueche_Backofen_Schalter icon="oven"
+        Setpoint item=Kueche_Backofen_Soll minValue=50 maxValue=250 step=10 icon="oven"
+        Selection item=Kueche_Backofen_Modus mappings=[Umluft="Umluft", Oberhitze="Ober-/Unterhitze", Grill="Grill"]
+        Text item=Kueche_Backofen_Ende icon="time"
+        Setpoint item=Kueche_Herd_Stufe minValue=0 maxValue=9 step=1 icon="heating"
+        Text item=Kueche_Kuehlschrank_Temperatur icon="temperature"
+        Text item=Kueche_Kuehlschrank_Tuer icon="door"
+        Switch item=Kueche_Spuelmaschine_Start icon="washingmachine"
+        Selection item=Kueche_Spuelmaschine_Programm mappings=[Eco="Eco", Auto="Auto", Intensiv="Intensiv"]
+        Text item=Kueche_Spuelmaschine_Rest icon="time"
+        Text item=Kueche_Rauchmelder_Alarm icon="smoke"
+    }
+    Frame label="Schlafzimmer" {
+        Text item=Schlafzimmer_Temperatur icon="temperature"
+        Switch item=Schlafzimmer_Klimaanlage_Schalter icon="climate"
+        Setpoint item=Schlafzimmer_Klimaanlage_Soll minValue=16 maxValue=26 step=0.5 icon="climate"
+        Selection item=Schlafzimmer_Klimaanlage_Modus mappings=["Kühlen"="Kühlen", "Lüften"="Lüften", "Entfeuchten"="Entfeuchten"]
+        Switch item=Schlafzimmer_Luftreiniger_Schalter icon="fan"
+        Text item=Schlafzimmer_Luftreiniger_Feinstaub icon="smoke"
+        Switch item=Schlafzimmer_Luftbefeuchter_Schalter icon="humidity"
+        Text item=Schlafzimmer_Luftfeuchte icon="humidity"
+    }
+    Frame label="Bad" {
+        Switch item=Bad_Waschmaschine_Start icon="washingmachine"
+        Text item=Bad_Waschmaschine_Status icon="washingmachine"
+        Text item=Bad_Waschmaschine_Rest icon="time"
+        Text item=Bad_Waschmaschine_Leistung icon="energy"
+        Switch item=Bad_Trockner_Start icon="dryer"
+        Text item=Bad_Trockner_Status icon="dryer"
+        Switch item=Bad_Luftentfeuchter_Schalter icon="humidity"
+        Text item=Bad_Luftfeuchte icon="humidity"
+        Text item=Bad_Wassermelder_Alarm icon="water"
+    }
+    Frame label="Diele" {
+        Text item=Diele_Praesenz icon="motion"
+        Text item=Diele_Praesenz_Zonen icon="motion"
+        Text item=Diele_Haustuer_Kontakt icon="frontdoor"
+        Switch item=Diele_Haustuer_Schloss icon="lock"
+        Switch item=Diele_Klingel_Taster mappings=[ON="klingeln"] icon="soundvolume"
+        Text item=Diele_Klingel_Zuletzt icon="time"
+        Text item=Diele_Klingel_Anruf icon="call"
+        Selection item=Diele_Alarmanlage_Modus mappings=[aus="aus", intern="intern", extern="extern"] icon="alarm"
+        Text item=Diele_Alarmanlage_Alarm icon="siren"
+    }
+    Frame label="Technik und Energie" {
+        Text item=Technik_Waermepumpe_Leistung icon="heating"
+        Text item=Technik_Waermepumpe_Vorlauf icon="temperature"
+        Text item=Technik_Waermepumpe_COP icon="line"
+        Text item=Technik_PV_Leistung icon="solarplant"
+        Text item=Technik_PV_Heute icon="solarplant"
+        Text item=Technik_Smartmeter_Netz icon="energy"
+        Text item=Technik_Smartmeter_Zaehler icon="energy"
+        Text item=Technik_Wasserzaehler_Stand icon="water"
+    }
+    Frame label="Garage" {
+        Default item=Garage_Tor_Position icon="garagedoor"
+        Switch item=Garage_Wallbox_Laden icon="energy"
+        Setpoint item=Garage_Wallbox_Strom minValue=6 maxValue=16 step=1 icon="energy"
+        Text item=Garage_Wallbox_Leistung icon="energy"
+        Text item=Garage_Auto_Ladestand icon="batterylevel"
+        Text item=Garage_Auto_Reichweite icon="line"
+        Mapview item=Garage_Auto_Position height=4
+    }
+    Frame label="Garten" {
+        Text item=Garten_Wind icon="wind"
+        Text item=Garten_Regen icon="rain"
+        Switch item=Garten_Maehroboter_Start icon="lawnmower"
+        Text item=Garten_Maehroboter_Status icon="lawnmower"
+        Text item=Garten_Maehroboter_Akku icon="batterylevel"
+        Mapview item=Garten_Maehroboter_Position height=4
+        Switch item=Garten_Sprinkler_Zone1 icon="water"
+        Setpoint item=Garten_Sprinkler_Dauer minValue=5 maxValue=60 step=5 icon="time"
+    }
+    Frame label="Saug- und Wischroboter" {
+        Switch item=Haus_Saugroboter_Start icon="cleaningrobot"
+        Text item=Haus_Saugroboter_Status icon="cleaningrobot"
+        Text item=Haus_Saugroboter_Akku icon="batterylevel"
+        Image item=Haus_Saugroboter_Karte
+    }
+}

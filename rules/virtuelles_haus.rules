@@ -1,0 +1,433 @@
+// =====================================================================
+//  Virtuelles Smart Home – Regeln, die aus virtuellen Items Geräte machen.
+//  Rules DSL, läuft ohne zusätzliches Add-on.
+// =====================================================================
+
+val java.util.Map<String, Timer> fahrten = newHashMap
+val Functions$Function1<State, Double> zahl = [ s |
+    if (s instanceof Number) (s as Number).doubleValue else 0.0 ]
+val sender = newArrayList("SWR3", "SWR1", "DASDING", "Deutschlandfunk", "SWR4")
+val karte = "iVBORw0KGgoAAAANSUhEUgAAAGAAAABACAIAAABqVuVZAAAA70lEQVR42u3aMQrCMBQG4FTcnDyCoxdw8iye1skD6OgNdBCho0OWUKyaYklov39RO8nH/0Ihr7k92iD9WSD4nGX82Gx3LDq5Xk4a9HODUrMaEhtd6v+k86RBDmlAZYAO57bgEw0yYoAACSBAgAABAgQIECABBAgQIECAAAESQHlp4vpL2aveUOXVs+UFIwYIUKhrP+jve2b1nPoaNLMNMw0CNMkRC5Wt4GqQETNiZbM+ruKX+/4J6D1N+nMMJiM2RaBOfb4+1yANApSVvsPYIe09KLNE3oMGzpoRc0gDAgQIkIx+L6ZBYS7rL6JBA/MCpB5G8Tai0V8AAAAASUVORK5CYII="
+
+// ---------------------------------------------------------------- Start
+rule "Virtuelles Haus: Startwerte"
+when
+    System started
+then
+    if (Wohnzimmer_Thermostat_Ist.state == NULL) Wohnzimmer_Thermostat_Ist.postUpdate("19.8 °C")
+    if (Wohnzimmer_Thermostat_Soll.state == NULL) Wohnzimmer_Thermostat_Soll.postUpdate("20 °C")
+    if (Wohnzimmer_Thermostat_Heizen.state == NULL) Wohnzimmer_Thermostat_Heizen.postUpdate(OFF)
+    if (Wohnzimmer_Farblampe_Farbe.state == NULL) Wohnzimmer_Farblampe_Farbe.postUpdate("40,60,0")
+    if (Wohnzimmer_Farblampe_Farbtemperatur.state == NULL) Wohnzimmer_Farblampe_Farbtemperatur.postUpdate(50)
+    if (Wohnzimmer_Farblampe_Effekt.state == NULL) Wohnzimmer_Farblampe_Effekt.postUpdate("kein")
+    if (Wohnzimmer_Deckenlampe_Helligkeit.state == NULL) Wohnzimmer_Deckenlampe_Helligkeit.postUpdate(0)
+    if (Wohnzimmer_Deckenlampe_Schalter.state == NULL) Wohnzimmer_Deckenlampe_Schalter.postUpdate(OFF)
+    if (Wohnzimmer_Steckdose_Schalter.state == NULL) Wohnzimmer_Steckdose_Schalter.postUpdate(OFF)
+    if (Wohnzimmer_Steckdose_Leistung.state == NULL) Wohnzimmer_Steckdose_Leistung.postUpdate("0 W")
+    if (Wohnzimmer_Steckdose_Energie.state == NULL) Wohnzimmer_Steckdose_Energie.postUpdate("12.345 kWh")
+    if (Wohnzimmer_Rollladen_Position.state == NULL) Wohnzimmer_Rollladen_Position.postUpdate(0)
+    if (Wohnzimmer_Jalousie_Position.state == NULL) Wohnzimmer_Jalousie_Position.postUpdate(0)
+    if (Wohnzimmer_Jalousie_Lamellen.state == NULL) Wohnzimmer_Jalousie_Lamellen.postUpdate(0)
+    if (Wohnzimmer_Fenster_Kontakt.state == NULL) Wohnzimmer_Fenster_Kontakt.postUpdate(CLOSED)
+    if (Wohnzimmer_Fenster_Motor.state == NULL) Wohnzimmer_Fenster_Motor.postUpdate("geschlossen")
+    if (Wohnzimmer_Raumluft_CO2.state == NULL) Wohnzimmer_Raumluft_CO2.postUpdate("650 ppm")
+    if (Wohnzimmer_Raumluft_Feuchte.state == NULL) Wohnzimmer_Raumluft_Feuchte.postUpdate("45 %")
+    if (Wohnzimmer_Soundsystem_Player.state == NULL) Wohnzimmer_Soundsystem_Player.postUpdate(PAUSE)
+    if (Wohnzimmer_Soundsystem_Lautstaerke.state == NULL) Wohnzimmer_Soundsystem_Lautstaerke.postUpdate(25)
+    if (Wohnzimmer_Soundsystem_Sender.state == NULL) Wohnzimmer_Soundsystem_Sender.postUpdate("SWR3")
+    if (Wohnzimmer_Soundsystem_Stumm.state == NULL) Wohnzimmer_Soundsystem_Stumm.postUpdate(OFF)
+    if (Wohnzimmer_Fernseher_Schalter.state == NULL) Wohnzimmer_Fernseher_Schalter.postUpdate(OFF)
+    if (Wohnzimmer_Fernseher_Kanal.state == NULL) Wohnzimmer_Fernseher_Kanal.postUpdate(1)
+    if (Wohnzimmer_Fernseher_Eingang.state == NULL) Wohnzimmer_Fernseher_Eingang.postUpdate("TV")
+    if (Kueche_Backofen_Schalter.state == NULL) Kueche_Backofen_Schalter.postUpdate(OFF)
+    if (Kueche_Backofen_Soll.state == NULL) Kueche_Backofen_Soll.postUpdate("180 °C")
+    if (Kueche_Backofen_Modus.state == NULL) Kueche_Backofen_Modus.postUpdate("Umluft")
+    if (Kueche_Herd_Stufe.state == NULL) Kueche_Herd_Stufe.postUpdate(0)
+    if (Kueche_Kuehlschrank_Temperatur.state == NULL) Kueche_Kuehlschrank_Temperatur.postUpdate("5.2 °C")
+    if (Kueche_Kuehlschrank_Tuer.state == NULL) Kueche_Kuehlschrank_Tuer.postUpdate(CLOSED)
+    if (Kueche_Spuelmaschine_Start.state == NULL) Kueche_Spuelmaschine_Start.postUpdate(OFF)
+    if (Kueche_Spuelmaschine_Programm.state == NULL) Kueche_Spuelmaschine_Programm.postUpdate("Eco")
+    if (Kueche_Spuelmaschine_Rest.state == NULL) Kueche_Spuelmaschine_Rest.postUpdate("0 min")
+    if (Kueche_Rauchmelder_Alarm.state == NULL) Kueche_Rauchmelder_Alarm.postUpdate(OFF)
+    if (Schlafzimmer_Luftreiniger_Schalter.state == NULL) Schlafzimmer_Luftreiniger_Schalter.postUpdate(OFF)
+    if (Schlafzimmer_Luftreiniger_Feinstaub.state == NULL) Schlafzimmer_Luftreiniger_Feinstaub.postUpdate("18 µg/m³")
+    if (Schlafzimmer_Klimaanlage_Schalter.state == NULL) Schlafzimmer_Klimaanlage_Schalter.postUpdate(OFF)
+    if (Schlafzimmer_Klimaanlage_Soll.state == NULL) Schlafzimmer_Klimaanlage_Soll.postUpdate("19 °C")
+    if (Schlafzimmer_Klimaanlage_Modus.state == NULL) Schlafzimmer_Klimaanlage_Modus.postUpdate("Kühlen")
+    if (Schlafzimmer_Temperatur.state == NULL) Schlafzimmer_Temperatur.postUpdate("19.4 °C")
+    if (Schlafzimmer_Luftbefeuchter_Schalter.state == NULL) Schlafzimmer_Luftbefeuchter_Schalter.postUpdate(OFF)
+    if (Schlafzimmer_Luftfeuchte.state == NULL) Schlafzimmer_Luftfeuchte.postUpdate("38 %")
+    if (Bad_Waschmaschine_Start.state == NULL) Bad_Waschmaschine_Start.postUpdate(OFF)
+    if (Bad_Waschmaschine_Status.state == NULL) Bad_Waschmaschine_Status.postUpdate("bereit")
+    if (Bad_Waschmaschine_Rest.state == NULL) Bad_Waschmaschine_Rest.postUpdate("0 min")
+    if (Bad_Waschmaschine_Leistung.state == NULL) Bad_Waschmaschine_Leistung.postUpdate("0 W")
+    if (Bad_Trockner_Start.state == NULL) Bad_Trockner_Start.postUpdate(OFF)
+    if (Bad_Trockner_Status.state == NULL) Bad_Trockner_Status.postUpdate("bereit")
+    if (Bad_Luftentfeuchter_Schalter.state == NULL) Bad_Luftentfeuchter_Schalter.postUpdate(OFF)
+    if (Bad_Luftfeuchte.state == NULL) Bad_Luftfeuchte.postUpdate("58 %")
+    if (Bad_Wassermelder_Alarm.state == NULL) Bad_Wassermelder_Alarm.postUpdate(OFF)
+    if (Diele_Praesenz.state == NULL) Diele_Praesenz.postUpdate(OFF)
+    if (Diele_Praesenz_Zonen.state == NULL) Diele_Praesenz_Zonen.postUpdate(0)
+    if (Diele_Haustuer_Kontakt.state == NULL) Diele_Haustuer_Kontakt.postUpdate(CLOSED)
+    if (Diele_Haustuer_Schloss.state == NULL) Diele_Haustuer_Schloss.postUpdate(ON)
+    if (Diele_Klingel_Taster.state == NULL) Diele_Klingel_Taster.postUpdate(OFF)
+    if (Diele_Alarmanlage_Modus.state == NULL) Diele_Alarmanlage_Modus.postUpdate("aus")
+    if (Diele_Alarmanlage_Alarm.state == NULL) Diele_Alarmanlage_Alarm.postUpdate(OFF)
+    if (Technik_Smartmeter_Zaehler.state == NULL) Technik_Smartmeter_Zaehler.postUpdate("4711.0 kWh")
+    if (Technik_Wasserzaehler_Stand.state == NULL) Technik_Wasserzaehler_Stand.postUpdate("123.456 m³")
+    if (Technik_PV_Heute.state == NULL) Technik_PV_Heute.postUpdate("0 kWh")
+    if (Garage_Tor_Position.state == NULL) Garage_Tor_Position.postUpdate(100)
+    if (Garage_Wallbox_Laden.state == NULL) Garage_Wallbox_Laden.postUpdate(OFF)
+    if (Garage_Wallbox_Strom.state == NULL) Garage_Wallbox_Strom.postUpdate("16 A")
+    if (Garage_Wallbox_Leistung.state == NULL) Garage_Wallbox_Leistung.postUpdate("0 W")
+    if (Garage_Auto_Ladestand.state == NULL) Garage_Auto_Ladestand.postUpdate("54 %")
+    if (Garage_Auto_Position.state == NULL) Garage_Auto_Position.postUpdate("48.0505,8.2075,860")
+    if (Garten_Regen.state == NULL) Garten_Regen.postUpdate("0 mm")
+    if (Garten_Maehroboter_Start.state == NULL) Garten_Maehroboter_Start.postUpdate(OFF)
+    if (Garten_Maehroboter_Status.state == NULL) Garten_Maehroboter_Status.postUpdate("in der Ladestation")
+    if (Garten_Maehroboter_Akku.state == NULL) Garten_Maehroboter_Akku.postUpdate("100 %")
+    if (Garten_Maehroboter_Position.state == NULL) Garten_Maehroboter_Position.postUpdate("48.0503,8.2071,860")
+    if (Garten_Sprinkler_Zone1.state == NULL) Garten_Sprinkler_Zone1.postUpdate(OFF)
+    if (Garten_Sprinkler_Dauer.state == NULL) Garten_Sprinkler_Dauer.postUpdate("10 min")
+    if (Haus_Saugroboter_Start.state == NULL) Haus_Saugroboter_Start.postUpdate(OFF)
+    if (Haus_Saugroboter_Status.state == NULL) Haus_Saugroboter_Status.postUpdate("in der Ladestation")
+    if (Haus_Saugroboter_Akku.state == NULL) Haus_Saugroboter_Akku.postUpdate("100 %")
+    Haus_Saugroboter_Karte.postUpdate("data:image/png;base64," + karte)
+    Garage_Auto_Reichweite.postUpdate("227 km")
+end
+
+// ---------------------------------------------------------------- Uhrzeit
+rule "Virtuelles Haus: Uhrzeit"
+when
+    Time cron "0 * * * * ?" or System started
+then
+    Haus_Uhrzeit.postUpdate(new DateTimeType())
+end
+
+// ---------------------------------------------------------------- Dimmer
+// Ein echter Dimmer rechnet INCREASE/DECREASE selbst – ein virtueller braucht eine Regel.
+rule "Virtuelles Haus: Dimmer heller und dunkler"
+when
+    Member of gVH_Dimmbar received command
+then
+    if (receivedCommand != INCREASE && receivedCommand != DECREASE) return;
+    var wert = if (triggeringItem.state instanceof Number) zahl.apply(triggeringItem.state).intValue else 0
+    wert = if (receivedCommand == INCREASE) Math::min(100, wert + 10) else Math::max(0, wert - 10)
+    triggeringItem.postUpdate(wert)
+end
+
+rule "Virtuelles Haus: Deckenlampe Schalter und Helligkeit"
+when
+    Item Wohnzimmer_Deckenlampe_Helligkeit changed
+then
+    val an = zahl.apply(Wohnzimmer_Deckenlampe_Helligkeit.state).intValue > 0
+    Wohnzimmer_Deckenlampe_Schalter.postUpdate(if (an) ON else OFF)
+end
+
+rule "Virtuelles Haus: Deckenlampe einschalten"
+when
+    Item Wohnzimmer_Deckenlampe_Schalter received command
+then
+    Wohnzimmer_Deckenlampe_Helligkeit.postUpdate(if (receivedCommand == ON) 80 else 0)
+end
+
+// ---------------------------------------------------------------- Rollläden, Jalousie, Garagentor
+// Ein Motor braucht Zeit: 10 % pro Sekunde, STOP hält an, eine Zahl fährt dorthin.
+rule "Virtuelles Haus: Rollläden fahren"
+when
+    Member of gVH_Rolllaeden received command
+then
+    val name = triggeringItem.name
+    fahrten.get(name)?.cancel()
+    fahrten.remove(name)
+    if (receivedCommand == STOP || receivedCommand == MOVE) return;
+    var int ziel = 0
+    if (receivedCommand == UP) ziel = 0
+    else if (receivedCommand == DOWN) ziel = 100
+    else ziel = (receivedCommand as Number).intValue
+    val int zielwert = ziel
+    val item = triggeringItem
+    fahrten.put(name, createTimer(now.plusSeconds(1), [ |
+        val aktuell = if (item.state instanceof Number) zahl.apply(item.state).intValue else 0
+        if (aktuell == zielwert) { fahrten.remove(name); return; }
+        val naechster = if (aktuell < zielwert) Math::min(zielwert, aktuell + 10)
+                        else Math::max(zielwert, aktuell - 10)
+        item.postUpdate(naechster)
+        fahrten.get(name)?.reschedule(now.plusSeconds(1))
+    ]))
+end
+
+rule "Virtuelles Haus: Rollläden morgens hoch, abends runter"
+when
+    Time cron "0 0 7 * * ?" or Time cron "0 0 20 * * ?"
+then
+    Wohnzimmer_Rollladen_Position.sendCommand(if (now.getHour == 7) UP else DOWN)
+end
+
+rule "Virtuelles Haus: Jalousie bei Mittagssonne"
+when
+    Item Technik_PV_Leistung changed
+then
+    val pv = zahl.apply(Technik_PV_Leistung.state)
+    if (pv > 3500 && Wohnzimmer_Jalousie_Position.state == 0) {
+        Wohnzimmer_Jalousie_Position.sendCommand(70)
+        Wohnzimmer_Jalousie_Lamellen.sendCommand(45)
+    } else if (pv < 2000 && zahl.apply(Wohnzimmer_Jalousie_Position.state).intValue > 0) {
+        Wohnzimmer_Jalousie_Position.sendCommand(UP)
+        Wohnzimmer_Jalousie_Lamellen.sendCommand(0)
+    }
+end
+
+// ---------------------------------------------------------------- Fenster
+rule "Virtuelles Haus: Fenstermotor"
+when
+    Item Wohnzimmer_Fenster_Motor received command
+then
+    Wohnzimmer_Fenster_Kontakt.postUpdate(if (receivedCommand.toString == "geschlossen") CLOSED else OPEN)
+end
+
+// ---------------------------------------------------------------- Klima und Luft
+rule "Virtuelles Haus: Raumklima alle 2 Minuten"
+when
+    Time cron "0 0/2 * * * ?"
+then
+    // Wohnzimmer: Fußbodenheizung mit Hysterese, die Temperatur läuft etwas nach
+    var ist = zahl.apply(Wohnzimmer_Thermostat_Ist.state)
+    val soll = zahl.apply(Wohnzimmer_Thermostat_Soll.state)
+    if (Wohnzimmer_Thermostat_Heizen.state == ON) ist = ist + 0.05 + Math::random * 0.1
+    else ist = ist - 0.03 - Math::random * 0.08
+    if (Wohnzimmer_Fenster_Kontakt.state == OPEN) ist = ist - 0.2
+    ist = Math::max(18.5, Math::min(21.5, ist))
+    Wohnzimmer_Thermostat_Ist.postUpdate(String::format(java.util.Locale.ROOT, "%.1f °C", ist))
+    if (ist < soll - 0.5) Wohnzimmer_Thermostat_Heizen.postUpdate(ON)
+    if (ist > soll) Wohnzimmer_Thermostat_Heizen.postUpdate(OFF)
+    Technik_Waermepumpe_Leistung.postUpdate(if (Wohnzimmer_Thermostat_Heizen.state == ON) "850 W" else "15 W")
+    Technik_Waermepumpe_Vorlauf.postUpdate(if (Wohnzimmer_Thermostat_Heizen.state == ON) "32.5 °C" else "24.0 °C")
+    Technik_Waermepumpe_COP.postUpdate(3.2 + Math::random * 0.9)
+
+    // CO₂ steigt bei geschlossenem Fenster, fällt bei offenem
+    var co2 = zahl.apply(Wohnzimmer_Raumluft_CO2.state).intValue
+    co2 = if (Wohnzimmer_Fenster_Kontakt.state == OPEN) Math::max(420, co2 - 120)
+          else Math::min(1800, co2 + 15 + (Math::random * 20).intValue)
+    Wohnzimmer_Raumluft_CO2.postUpdate(co2 + " ppm")
+
+    // Schlafzimmer: Klimaanlage kühlt in Richtung Soll
+    var temp = zahl.apply(Schlafzimmer_Temperatur.state)
+    if (Schlafzimmer_Klimaanlage_Schalter.state == ON)
+        temp = temp - Math::signum(temp - zahl.apply(Schlafzimmer_Klimaanlage_Soll.state)) * 0.2
+    else temp = temp + (Math::random - 0.5) * 0.2
+    Schlafzimmer_Temperatur.postUpdate(String::format(java.util.Locale.ROOT, "%.1f °C", temp))
+
+    // Luftfeuchte, Feinstaub
+    var feucht = zahl.apply(Schlafzimmer_Luftfeuchte.state)
+    feucht = if (Schlafzimmer_Luftbefeuchter_Schalter.state == ON) Math::min(55, feucht + 1) else Math::max(30, feucht - 0.3)
+    Schlafzimmer_Luftfeuchte.postUpdate(Math::round(feucht) + " %")
+    var bad = zahl.apply(Bad_Luftfeuchte.state)
+    bad = if (Bad_Luftentfeuchter_Schalter.state == ON) Math::max(45, bad - 2) else Math::min(75, bad + 0.5)
+    Bad_Luftfeuchte.postUpdate(Math::round(bad) + " %")
+    var pm = zahl.apply(Schlafzimmer_Luftreiniger_Feinstaub.state)
+    pm = if (Schlafzimmer_Luftreiniger_Schalter.state == ON) Math::max(3, pm * 0.7) else Math::min(40, pm + Math::random * 2)
+    Schlafzimmer_Luftreiniger_Feinstaub.postUpdate(Math::round(pm) + " µg/m³")
+    Kueche_Kuehlschrank_Temperatur.postUpdate(String::format(java.util.Locale.ROOT, "%.1f °C",
+        if (Kueche_Kuehlschrank_Tuer.state == OPEN) 8.0 else 4.6 + Math::random * 1.0))
+end
+
+// ---------------------------------------------------------------- Wetter und Energie
+rule "Virtuelles Haus: Wetter und Energie alle 5 Minuten"
+when
+    Time cron "0 0/5 * * * ?" or System started
+then
+    val stunde = now.getHour + now.getMinute / 60.0
+    val sonne = Math::max(0.0, Math::sin((stunde - 7) / 12.0 * Math::PI))
+    Garten_Temperatur.postUpdate(String::format(java.util.Locale.ROOT, "%.1f °C", 4 + 9 * sonne + Math::random))
+    Garten_Wind.postUpdate(String::format(java.util.Locale.ROOT, "%.1f km/h", Math::random * 25))
+    Technik_PV_Leistung.postUpdate(Math::round(6000 * sonne * (0.7 + Math::random * 0.3)) + " W")
+    val pvHeute = zahl.apply(Technik_PV_Heute.state) + zahl.apply(Technik_PV_Leistung.state) / 12000.0
+    Technik_PV_Heute.postUpdate(String::format(java.util.Locale.ROOT, "%.2f kWh", if (stunde < 0.1) 0.0 else pvHeute))
+    val verbrauch = zahl.apply(gVH_Verbrauch.state) + 250
+    val netz = verbrauch - zahl.apply(Technik_PV_Leistung.state)
+    Technik_Smartmeter_Netz.postUpdate(Math::round(netz) + " W")
+    if (netz > 0) Technik_Smartmeter_Zaehler.postUpdate(String::format(java.util.Locale.ROOT, "%.1f kWh",
+        zahl.apply(Technik_Smartmeter_Zaehler.state) + netz / 12000.0))
+    Technik_Wasserzaehler_Stand.postUpdate(String::format(java.util.Locale.ROOT, "%.3f m³",
+        zahl.apply(Technik_Wasserzaehler_Stand.state) + Math::random * 0.004))
+    val wetter = (Math::random * 10).intValue
+    if (wetter == 0) Garten_Regen.postUpdate(String::format(java.util.Locale.ROOT, "%.1f mm",
+        zahl.apply(Garten_Regen.state) + 0.4))
+end
+
+rule "Virtuelles Haus: Steckdose"
+when
+    Item Wohnzimmer_Steckdose_Schalter changed
+then
+    Wohnzimmer_Steckdose_Leistung.postUpdate(if (Wohnzimmer_Steckdose_Schalter.state == ON) "42.5 W" else "0 W")
+end
+
+rule "Virtuelles Haus: Steckdose zählt Energie"
+when
+    Time cron "0 * * * * ?"
+then
+    val kwh = zahl.apply(Wohnzimmer_Steckdose_Energie.state)
+        + zahl.apply(Wohnzimmer_Steckdose_Leistung.state) / 60000.0
+    Wohnzimmer_Steckdose_Energie.postUpdate(String::format(java.util.Locale.ROOT, "%.3f kWh", kwh))
+end
+
+// ---------------------------------------------------------------- Unterhaltung
+rule "Virtuelles Haus: Soundsystem Sender wechseln"
+when
+    Item Wohnzimmer_Soundsystem_Player received command
+then
+    if (receivedCommand != NEXT && receivedCommand != PREVIOUS) return;
+    var i = sender.indexOf(Wohnzimmer_Soundsystem_Sender.state.toString)
+    i = if (receivedCommand == NEXT) (i + 1) % sender.size else (i + sender.size - 1) % sender.size
+    Wohnzimmer_Soundsystem_Sender.postUpdate(sender.get(i))
+    Wohnzimmer_Soundsystem_Player.postUpdate(PLAY)
+end
+
+// ---------------------------------------------------------------- Küche
+rule "Virtuelles Haus: Backofen"
+when
+    Item Kueche_Backofen_Schalter changed
+then
+    if (Kueche_Backofen_Schalter.state == ON) Kueche_Backofen_Ende.postUpdate(new DateTimeType(now.plusMinutes(45)))
+    else Kueche_Backofen_Ende.postUpdate(UNDEF)
+end
+
+rule "Virtuelles Haus: Programme starten"
+when
+    Item Kueche_Spuelmaschine_Start changed to ON or
+    Item Bad_Waschmaschine_Start changed to ON or
+    Item Bad_Trockner_Start changed to ON
+then
+    switch (triggeringItemName) {
+        case "Kueche_Spuelmaschine_Start": Kueche_Spuelmaschine_Rest.postUpdate("90 min")
+        case "Bad_Waschmaschine_Start": {
+            Bad_Waschmaschine_Rest.postUpdate("60 min")
+            Bad_Waschmaschine_Status.postUpdate("wäscht")
+            Bad_Waschmaschine_Leistung.postUpdate("2100 W")
+        }
+        case "Bad_Trockner_Start": Bad_Trockner_Status.postUpdate("trocknet")
+    }
+end
+
+rule "Virtuelles Haus: Programme laufen (1 Minute = 10 Minuten)"
+when
+    Time cron "0 * * * * ?"
+then
+    if (Kueche_Spuelmaschine_Start.state == ON) {
+        val rest = zahl.apply(Kueche_Spuelmaschine_Rest.state).intValue - 10
+        Kueche_Spuelmaschine_Rest.postUpdate(Math::max(0, rest) + " min")
+        if (rest <= 0) Kueche_Spuelmaschine_Start.postUpdate(OFF)
+    }
+    if (Bad_Waschmaschine_Start.state == ON) {
+        val rest = zahl.apply(Bad_Waschmaschine_Rest.state).intValue - 10
+        Bad_Waschmaschine_Rest.postUpdate(Math::max(0, rest) + " min")
+        Bad_Waschmaschine_Leistung.postUpdate(if (rest > 40) "2100 W" else "350 W")
+        Bad_Waschmaschine_Status.postUpdate(if (rest > 10) "wäscht" else "schleudert")
+        if (rest <= 0) {
+            Bad_Waschmaschine_Start.postUpdate(OFF)
+            Bad_Waschmaschine_Status.postUpdate("fertig")
+            Bad_Waschmaschine_Leistung.postUpdate("0 W")
+        }
+    }
+    if (Bad_Trockner_Start.state == ON && Math::random < 0.2) {
+        Bad_Trockner_Start.postUpdate(OFF)
+        Bad_Trockner_Status.postUpdate("fertig")
+    }
+end
+
+// ---------------------------------------------------------------- Diele
+rule "Virtuelles Haus: Präsenz"
+when
+    Time cron "30 * * * * ?"
+then
+    val zonen = (Math::random * 4).intValue
+    Diele_Praesenz_Zonen.postUpdate(zonen)
+    Diele_Praesenz.postUpdate(if (zonen > 0) ON else OFF)
+end
+
+rule "Virtuelles Haus: Klingel"
+when
+    Item Diele_Klingel_Taster changed to ON
+then
+    Diele_Klingel_Zuletzt.postUpdate(new DateTimeType())
+    Diele_Klingel_Anruf.postUpdate("Wohnung,Haustür")
+    createTimer(now.plusSeconds(2), [ | Diele_Klingel_Taster.postUpdate(OFF) ])
+end
+
+rule "Virtuelles Haus: Alarmanlage"
+when
+    Item Diele_Haustuer_Kontakt changed to OPEN or
+    Item Wohnzimmer_Fenster_Kontakt changed to OPEN
+then
+    if (Diele_Alarmanlage_Modus.state.toString == "extern") Diele_Alarmanlage_Alarm.postUpdate(ON)
+end
+
+rule "Virtuelles Haus: Alarmanlage aus"
+when
+    Item Diele_Alarmanlage_Modus changed to "aus"
+then
+    Diele_Alarmanlage_Alarm.postUpdate(OFF)
+end
+
+// ---------------------------------------------------------------- Garage
+rule "Virtuelles Haus: Wallbox"
+when
+    Time cron "0 * * * * ?" or Item Garage_Wallbox_Laden changed
+then
+    if (Garage_Wallbox_Laden.state != ON) {
+        Garage_Wallbox_Leistung.postUpdate("0 W")
+        return;
+    }
+    val ampere = zahl.apply(Garage_Wallbox_Strom.state)
+    Garage_Wallbox_Leistung.postUpdate(Math::round(ampere * 230 * 3) + " W")
+    val soc = Math::min(100.0, zahl.apply(Garage_Auto_Ladestand.state) + ampere / 16.0)
+    Garage_Auto_Ladestand.postUpdate(String::format(java.util.Locale.ROOT, "%.0f %%", soc))
+    Garage_Auto_Reichweite.postUpdate(Math::round(soc * 4.2) + " km")
+    if (soc >= 100) Garage_Wallbox_Laden.postUpdate(OFF)
+end
+
+// ---------------------------------------------------------------- Roboter
+rule "Virtuelles Haus: Mähroboter und Saugroboter"
+when
+    Time cron "15 * * * * ?" or
+    Item Garten_Maehroboter_Start changed or
+    Item Haus_Saugroboter_Start changed
+then
+    // Mähroboter: fährt Bahnen über den Rasen, Akku sinkt, bei 20 % zurück
+    var akku = zahl.apply(Garten_Maehroboter_Akku.state)
+    if (Garten_Maehroboter_Start.state == ON && akku > 20) {
+        Garten_Maehroboter_Status.postUpdate("mäht")
+        akku = akku - 4
+        val bahn = ((100 - akku) / 4).intValue
+        val lat = 48.0503 + (bahn % 5) * 0.00004
+        val lon = 8.2071 + (bahn / 5) * 0.00006
+        Garten_Maehroboter_Position.postUpdate(String::format(java.util.Locale.ROOT, "%.5f,%.5f,860", lat, lon))
+    } else {
+        if (Garten_Maehroboter_Start.state == ON) Garten_Maehroboter_Start.postUpdate(OFF)
+        Garten_Maehroboter_Status.postUpdate(if (akku < 100) "lädt" else "in der Ladestation")
+        Garten_Maehroboter_Position.postUpdate("48.0503,8.2071,860")
+        akku = Math::min(100.0, akku + 10)
+    }
+    Garten_Maehroboter_Akku.postUpdate(Math::round(akku) + " %")
+
+    var sauger = zahl.apply(Haus_Saugroboter_Akku.state)
+    if (Haus_Saugroboter_Start.state == ON && sauger > 15) {
+        Haus_Saugroboter_Status.postUpdate("saugt und wischt")
+        sauger = sauger - 6
+    } else {
+        if (Haus_Saugroboter_Start.state == ON) Haus_Saugroboter_Start.postUpdate(OFF)
+        Haus_Saugroboter_Status.postUpdate(if (sauger < 100) "lädt" else "in der Ladestation")
+        sauger = Math::min(100.0, sauger + 8)
+    }
+    Haus_Saugroboter_Akku.postUpdate(Math::round(sauger) + " %")
+end
+
+// ---------------------------------------------------------------- Garten
+rule "Virtuelles Haus: Sprinkler schaltet nach Laufzeit ab"
+when
+    Item Garten_Sprinkler_Zone1 changed to ON
+then
+    val minuten = zahl.apply(Garten_Sprinkler_Dauer.state).intValue
+    createTimer(now.plusMinutes(minuten), [ | Garten_Sprinkler_Zone1.sendCommand(OFF) ])
+end
