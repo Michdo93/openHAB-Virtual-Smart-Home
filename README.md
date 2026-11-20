@@ -61,7 +61,7 @@ Alle Gruppen beginnen mit `gVH_`, damit sie nicht mit anderen Konfigurationen ko
 | Raumklima | alle 2 Minuten: Temperatur mit Heizungs-Hysterese, CO₂ steigt bei geschlossenem Fenster |
 | Wetter und Energie | alle 5 Minuten: Außentemperatur und PV nach Sonnenstand, Smart Meter, Wasserzähler |
 | Geräte | Waschmaschine, Spülmaschine und Trockner laufen ab (1 Minute = 10 Minuten) |
-| Diele | Präsenz zufällig, Klingel setzt Zeitpunkt und Türruf, Alarmanlage löst bei „extern“ aus |
+| Diele | Präsenz zufällig (etwa jede vierte Minute jemand da), Klingel setzt Zeitpunkt und Türruf, Alarmanlage löst bei „extern“ aus |
 | Garage | Wallbox lädt das Auto, Reichweite folgt dem Ladestand |
 | Roboter | Mähroboter fährt Bahnen (Position), beide Roboter entladen und laden ihre Akkus |
 

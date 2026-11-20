@@ -2,9 +2,11 @@
 //  Virtuelles Smart Home – Regeln, die aus virtuellen Items Geräte machen.
 //  Rules DSL, läuft ohne zusätzliches Add-on.
 // =====================================================================
+import org.eclipse.xtext.xbase.lib.Functions
+import org.openhab.core.types.State
 
 val java.util.Map<String, Timer> fahrten = newHashMap
-val Functions$Function1<State, Double> zahl = [ s |
+val Functions$Function1<State, Double> zahl = [ State s |
     if (s instanceof Number) (s as Number).doubleValue else 0.0 ]
 val sender = newArrayList("SWR3", "SWR1", "DASDING", "Deutschlandfunk", "SWR4")
 val karte = "iVBORw0KGgoAAAANSUhEUgAAAGAAAABACAIAAABqVuVZAAAA70lEQVR42u3aMQrCMBQG4FTcnDyCoxdw8iye1skD6OgNdBCho0OWUKyaYklov39RO8nH/0Ihr7k92iD9WSD4nGX82Gx3LDq5Xk4a9HODUrMaEhtd6v+k86RBDmlAZYAO57bgEw0yYoAACSBAgAABAgQIECABBAgQIECAAAESQHlp4vpL2aveUOXVs+UFIwYIUKhrP+jve2b1nPoaNLMNMw0CNMkRC5Wt4GqQETNiZbM+ruKX+/4J6D1N+nMMJiM2RaBOfb4+1yANApSVvsPYIe09KLNE3oMGzpoRc0gDAgQIkIx+L6ZBYS7rL6JBA/MCpB5G8Tai0V8AAAAASUVORK5CYII="
@@ -341,7 +343,8 @@ rule "Virtuelles Haus: Präsenz"
 when
     Time cron "30 * * * * ?"
 then
-    val zonen = (Math::random * 4).intValue
+    // meist ist niemand da: nur in jeder vierten Minute 1 bis 3 belegte Zonen
+    val zonen = if (Math::random < 0.25) 1 + (Math::random * 3).intValue else 0
     Diele_Praesenz_Zonen.postUpdate(zonen)
     Diele_Praesenz.postUpdate(if (zonen > 0) ON else OFF)
 end
