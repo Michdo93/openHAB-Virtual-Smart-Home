@@ -200,11 +200,13 @@ then
     else ist = ist - 0.03 - Math::random * 0.08
     if (Wohnzimmer_Fenster_Kontakt.state == OPEN) ist = ist - 0.2
     ist = Math::max(18.5, Math::min(21.5, ist))
-    Wohnzimmer_Thermostat_Ist.postUpdate(String::format(java.util.Locale.ROOT, "%.1f °C", ist))
+    Wohnzimmer_Thermostat_Ist.postUpdate(
+        String::format(java.util.Locale.ROOT, "%.1f °C", ist))
     if (ist < soll - 0.5) Wohnzimmer_Thermostat_Heizen.postUpdate(ON)
     if (ist > soll) Wohnzimmer_Thermostat_Heizen.postUpdate(OFF)
-    Technik_Waermepumpe_Leistung.postUpdate(if (Wohnzimmer_Thermostat_Heizen.state == ON) "850 W" else "15 W")
-    Technik_Waermepumpe_Vorlauf.postUpdate(if (Wohnzimmer_Thermostat_Heizen.state == ON) "32.5 °C" else "24.0 °C")
+    val heizt = Wohnzimmer_Thermostat_Heizen.state == ON
+    Technik_Waermepumpe_Leistung.postUpdate(if (heizt) "850 W" else "15 W")
+    Technik_Waermepumpe_Vorlauf.postUpdate(if (heizt) "32.5 °C" else "24.0 °C")
     Technik_Waermepumpe_COP.postUpdate(3.2 + Math::random * 0.9)
 
     // CO₂ steigt bei geschlossenem Fenster, fällt bei offenem
