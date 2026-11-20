@@ -7,196 +7,283 @@
 //    Rollershutter, Player, String, DateTime, Location, Call, Image, Group
 // =====================================================================
 
-Group  gVH_Haus            "Virtuelles Haus"                                   ["House"]
-Group  gVH_Wohnzimmer      "Wohnzimmer"        (gVH_Haus)                         ["LivingRoom"]
-Group  gVH_Kueche          "Küche"             (gVH_Haus)                         ["Kitchen"]
-Group  gVH_Schlafzimmer    "Schlafzimmer"      (gVH_Haus)                         ["Bedroom"]
-Group  gVH_Bad             "Bad"               (gVH_Haus)                         ["Bathroom"]
-Group  gVH_Diele           "Diele"             (gVH_Haus)                         ["Corridor"]
-Group  gVH_Technik         "Technikraum"       (gVH_Haus)                         ["BoilerRoom"]
-Group  gVH_Garage          "Garage"            (gVH_Haus)                         ["Garage"]
-Group  gVH_Garten          "Garten"            (gVH_Haus)                         ["Garden"]
+Group gVH_Haus "Virtuelles Haus" ["House"]
+Group gVH_Wohnzimmer "Wohnzimmer" (gVH_Haus) ["LivingRoom"]
+Group gVH_Kueche "Küche" (gVH_Haus) ["Kitchen"]
+Group gVH_Schlafzimmer "Schlafzimmer" (gVH_Haus) ["Bedroom"]
+Group gVH_Bad "Bad" (gVH_Haus) ["Bathroom"]
+Group gVH_Diele "Diele" (gVH_Haus) ["Corridor"]
+Group gVH_Technik "Technikraum" (gVH_Haus) ["BoilerRoom"]
+Group gVH_Garage "Garage" (gVH_Haus) ["Garage"]
+Group gVH_Garten "Garten" (gVH_Haus) ["Garden"]
 
 // ---- Gruppen mit Funktion: ein Zustand aus vielen Items ----
 Group:Switch:OR(ON, OFF)            gVH_Lichter    "Lichter an [%d]"
 Group:Contact:OR(OPEN, CLOSED)      gVH_Fenster    "Fenster offen [%d]"
-Group:Number:Temperature:AVG        gVH_Innen      "Mittlere Innentemperatur [%.1f °C]"
+Group:Number:Temperature:AVG gVH_Innen "Mittlere Innentemperatur [%.1f °C]"
 Group:Number:Power:SUM              gVH_Verbrauch  "Verbrauch Geräte [%.0f W]"
-Group                               gVH_Dimmbar    // Dimmer, die INCREASE/DECREASE per Regel können
-Group                               gVH_Rolllaeden // fahren per Regel langsam wie echte Motoren
+Group gVH_Dimmbar // Dimmer, die INCREASE/DECREASE per Regel können
+Group gVH_Rolllaeden // fahren per Regel langsam wie echte Motoren
 
 // ---- Uhrzeit (DateTime) ----
-DateTime Haus_Uhrzeit           "Uhrzeit [%1$tH:%1$tM]"                 (gVH_Haus)          ["Status", "Timestamp"]
+DateTime Haus_Uhrzeit "Uhrzeit [%1$tH:%1$tM]" (gVH_Haus) ["Status", "Timestamp"]
 
 // =========================== Wohnzimmer ===========================
-Group  Wohnzimmer_Farblampe     "Farblampe"            (gVH_Wohnzimmer)              ["Lightbulb"]
-Color  Wohnzimmer_Farblampe_Farbe "Farbe"              (Wohnzimmer_Farblampe, gVH_Lichter) ["Control", "Color"]
-Dimmer Wohnzimmer_Farblampe_Farbtemperatur "Farbtemperatur [%d %%]" (Wohnzimmer_Farblampe, gVH_Dimmbar) ["Control", "ColorTemperature"]
-String Wohnzimmer_Farblampe_Effekt "Effekt [%s]"       (Wohnzimmer_Farblampe)     ["Control", "Mode"] { commandDescription=""[options="kein=kein,Kerze=Kerze,Regenbogen=Regenbogen"] }
+Group Wohnzimmer_Farblampe "Farblampe" (gVH_Wohnzimmer) ["Lightbulb"]
+Color Wohnzimmer_Farblampe_Farbe "Farbe" (Wohnzimmer_Farblampe, gVH_Lichter)
+    ["Control", "Color"]
+Dimmer Wohnzimmer_Farblampe_Farbtemperatur "Farbtemperatur [%d %%]"
+    (Wohnzimmer_Farblampe, gVH_Dimmbar) ["Control", "ColorTemperature"]
+String Wohnzimmer_Farblampe_Effekt "Effekt [%s]" (Wohnzimmer_Farblampe)
+    ["Control", "Mode"]
+    { commandDescription=""[options="kein=kein,Kerze=Kerze,Regenbogen=Regenbogen"] }
 
-Group  Wohnzimmer_Deckenlampe   "Deckenlampe"          (gVH_Wohnzimmer)              ["Lightbulb"]
-Dimmer Wohnzimmer_Deckenlampe_Helligkeit "Helligkeit [%d %%]" (Wohnzimmer_Deckenlampe, gVH_Dimmbar) ["Control", "Brightness"]
-Switch Wohnzimmer_Deckenlampe_Schalter "Deckenlampe"  (Wohnzimmer_Deckenlampe, gVH_Lichter) ["Switch", "Light"]
+Group Wohnzimmer_Deckenlampe "Deckenlampe" (gVH_Wohnzimmer) ["Lightbulb"]
+Dimmer Wohnzimmer_Deckenlampe_Helligkeit "Helligkeit [%d %%]"
+    (Wohnzimmer_Deckenlampe, gVH_Dimmbar) ["Control", "Brightness"]
+Switch Wohnzimmer_Deckenlampe_Schalter "Deckenlampe"
+    (Wohnzimmer_Deckenlampe, gVH_Lichter) ["Switch", "Light"]
 
-Group  Wohnzimmer_Steckdose     "Steckdose Stehlampe"  (gVH_Wohnzimmer)              ["PowerOutlet"]
-Switch Wohnzimmer_Steckdose_Schalter "Steckdose"       (Wohnzimmer_Steckdose)     ["Switch", "Power"]
-Number:Power  Wohnzimmer_Steckdose_Leistung "Leistung [%.1f W]" (Wohnzimmer_Steckdose, gVH_Verbrauch) ["Measurement", "Power"] { unit="W" }
-Number:Energy Wohnzimmer_Steckdose_Energie  "Energie [%.3f kWh]" (Wohnzimmer_Steckdose) ["Measurement", "Energy"] { unit="kWh" }
+Group Wohnzimmer_Steckdose "Steckdose Stehlampe" (gVH_Wohnzimmer) ["PowerOutlet"]
+Switch Wohnzimmer_Steckdose_Schalter "Steckdose" (Wohnzimmer_Steckdose)
+    ["Switch", "Power"]
+Number:Power Wohnzimmer_Steckdose_Leistung "Leistung [%.1f W]"
+    (Wohnzimmer_Steckdose, gVH_Verbrauch) ["Measurement", "Power"] { unit="W" }
+Number:Energy Wohnzimmer_Steckdose_Energie "Energie [%.3f kWh]" (Wohnzimmer_Steckdose)
+    ["Measurement", "Energy"] { unit="kWh" }
 
-Group  Wohnzimmer_Rollladen     "Rollladen"            (gVH_Wohnzimmer)              ["Blinds"]
-Rollershutter Wohnzimmer_Rollladen_Position "Rollladen [%d %%]" (Wohnzimmer_Rollladen, gVH_Rolllaeden) ["Control", "OpenLevel"] { autoupdate="false" }
+Group Wohnzimmer_Rollladen "Rollladen" (gVH_Wohnzimmer) ["Blinds"]
+Rollershutter Wohnzimmer_Rollladen_Position "Rollladen [%d %%]"
+    (Wohnzimmer_Rollladen, gVH_Rolllaeden) ["Control", "OpenLevel"]
+    { autoupdate="false" }
 
-Group  Wohnzimmer_Jalousie      "Jalousie"             (gVH_Wohnzimmer)              ["WindowCovering"]
-Rollershutter Wohnzimmer_Jalousie_Position "Jalousie [%d %%]" (Wohnzimmer_Jalousie, gVH_Rolllaeden) ["Control", "OpenLevel"] { autoupdate="false" }
-Dimmer Wohnzimmer_Jalousie_Lamellen "Lamellenwinkel [%d %%]" (Wohnzimmer_Jalousie) ["Control", "Tilt"]
+Group Wohnzimmer_Jalousie "Jalousie" (gVH_Wohnzimmer) ["WindowCovering"]
+Rollershutter Wohnzimmer_Jalousie_Position "Jalousie [%d %%]"
+    (Wohnzimmer_Jalousie, gVH_Rolllaeden) ["Control", "OpenLevel"]
+    { autoupdate="false" }
+Dimmer Wohnzimmer_Jalousie_Lamellen "Lamellenwinkel [%d %%]" (Wohnzimmer_Jalousie)
+    ["Control", "Tilt"]
 
-Group  Wohnzimmer_Fenster       "Fenster"              (gVH_Wohnzimmer)              ["Window"]
-Contact Wohnzimmer_Fenster_Kontakt "Fensterkontakt [%s]" (Wohnzimmer_Fenster, gVH_Fenster) ["Status", "OpenState"]
-String Wohnzimmer_Fenster_Motor "Fenstermotor [MAP(fenster.map):%s]" (Wohnzimmer_Fenster) ["Control", "Opening"] { commandDescription=""[options="geschlossen=zu,gekippt=kippen,offen=auf"] }
+Group Wohnzimmer_Fenster "Fenster" (gVH_Wohnzimmer) ["Window"]
+Contact Wohnzimmer_Fenster_Kontakt "Fensterkontakt [%s]"
+    (Wohnzimmer_Fenster, gVH_Fenster) ["Status", "OpenState"]
+String Wohnzimmer_Fenster_Motor "Fenstermotor [MAP(fenster.map):%s]"
+    (Wohnzimmer_Fenster) ["Control", "Opening"]
+    { commandDescription=""[options="geschlossen=zu,gekippt=kippen,offen=auf"] }
 
-Group  Wohnzimmer_Thermostat    "Thermostat Fußbodenheizung" (gVH_Wohnzimmer)        ["Thermostat"]
-Number:Temperature Wohnzimmer_Thermostat_Ist  "Raumtemperatur [%.1f °C]" (Wohnzimmer_Thermostat, gVH_Innen) ["Measurement", "Temperature"] { unit="°C" }
-Number:Temperature Wohnzimmer_Thermostat_Soll "Solltemperatur [%.1f °C]" (Wohnzimmer_Thermostat) ["Setpoint", "Temperature"] { unit="°C", stateDescription=""[min="16", max="26", step="0.5"] }
-Switch Wohnzimmer_Thermostat_Heizen "Heizen [%s]"      (Wohnzimmer_Thermostat)    ["Status", "Heating"]
+Group Wohnzimmer_Thermostat "Thermostat Fußbodenheizung" (gVH_Wohnzimmer)
+    ["Thermostat"]
+Number:Temperature Wohnzimmer_Thermostat_Ist "Raumtemperatur [%.1f °C]"
+    (Wohnzimmer_Thermostat, gVH_Innen) ["Measurement", "Temperature"] { unit="°C" }
+Number:Temperature Wohnzimmer_Thermostat_Soll "Solltemperatur [%.1f °C]"
+    (Wohnzimmer_Thermostat) ["Setpoint", "Temperature"]
+    { unit="°C", stateDescription=""[min="16", max="26", step="0.5"] }
+Switch Wohnzimmer_Thermostat_Heizen "Heizen [%s]" (Wohnzimmer_Thermostat)
+    ["Status", "Heating"]
 
-Group  Wohnzimmer_Raumluft      "Raumluftsensor"       (gVH_Wohnzimmer)              ["AirQualitySensor"]
-Number:Dimensionless Wohnzimmer_Raumluft_CO2 "CO₂ [%d ppm]" (Wohnzimmer_Raumluft) ["Measurement", "CO2"] { unit="ppm" }
-Number:Dimensionless Wohnzimmer_Raumluft_Feuchte "Luftfeuchte [%.0f %%]" (Wohnzimmer_Raumluft) ["Measurement", "Humidity"] { unit="%" }
+Group Wohnzimmer_Raumluft "Raumluftsensor" (gVH_Wohnzimmer) ["AirQualitySensor"]
+Number:Dimensionless Wohnzimmer_Raumluft_CO2 "CO₂ [%d ppm]" (Wohnzimmer_Raumluft)
+    ["Measurement", "CO2"] { unit="ppm" }
+Number:Dimensionless Wohnzimmer_Raumluft_Feuchte "Luftfeuchte [%.0f %%]"
+    (Wohnzimmer_Raumluft) ["Measurement", "Humidity"] { unit="%" }
 
-Group  Wohnzimmer_Soundsystem   "Soundsystem"          (gVH_Wohnzimmer)              ["Speaker"]
-Player Wohnzimmer_Soundsystem_Player "Wiedergabe"      (Wohnzimmer_Soundsystem)   ["Control", "MediaControl"]
-Dimmer Wohnzimmer_Soundsystem_Lautstaerke "Lautstärke [%d %%]" (Wohnzimmer_Soundsystem, gVH_Dimmbar) ["Control", "SoundVolume"]
-String Wohnzimmer_Soundsystem_Sender "Sender [%s]"     (Wohnzimmer_Soundsystem)   ["Status", "Channel"]
-Switch Wohnzimmer_Soundsystem_Stumm "Stumm"            (Wohnzimmer_Soundsystem)   ["Switch", "SoundVolume"]
+Group Wohnzimmer_Soundsystem "Soundsystem" (gVH_Wohnzimmer) ["Speaker"]
+Player Wohnzimmer_Soundsystem_Player "Wiedergabe" (Wohnzimmer_Soundsystem)
+    ["Control", "MediaControl"]
+Dimmer Wohnzimmer_Soundsystem_Lautstaerke "Lautstärke [%d %%]"
+    (Wohnzimmer_Soundsystem, gVH_Dimmbar) ["Control", "SoundVolume"]
+String Wohnzimmer_Soundsystem_Sender "Sender [%s]" (Wohnzimmer_Soundsystem)
+    ["Status", "Channel"]
+Switch Wohnzimmer_Soundsystem_Stumm "Stumm" (Wohnzimmer_Soundsystem)
+    ["Switch", "SoundVolume"]
 
-Group  Wohnzimmer_Fernseher     "Fernseher"            (gVH_Wohnzimmer)              ["Television"]
-Switch Wohnzimmer_Fernseher_Schalter "Fernseher"       (Wohnzimmer_Fernseher)     ["Switch", "Power"]
-Number Wohnzimmer_Fernseher_Kanal "Programmplatz [%d]" (Wohnzimmer_Fernseher)     ["Control", "Channel"] { stateDescription=""[min="1", max="99", step="1"] }
-String Wohnzimmer_Fernseher_Eingang "Eingang [%s]"     (Wohnzimmer_Fernseher)     ["Control", "Mode"] { commandDescription=""[options="TV=TV,HDMI1=HDMI 1,HDMI2=HDMI 2"] }
+Group Wohnzimmer_Fernseher "Fernseher" (gVH_Wohnzimmer) ["Television"]
+Switch Wohnzimmer_Fernseher_Schalter "Fernseher" (Wohnzimmer_Fernseher)
+    ["Switch", "Power"]
+Number Wohnzimmer_Fernseher_Kanal "Programmplatz [%d]" (Wohnzimmer_Fernseher)
+    ["Control", "Channel"] { stateDescription=""[min="1", max="99", step="1"] }
+String Wohnzimmer_Fernseher_Eingang "Eingang [%s]" (Wohnzimmer_Fernseher)
+    ["Control", "Mode"]
+    { commandDescription=""[options="TV=TV,HDMI1=HDMI 1,HDMI2=HDMI 2"] }
 
 // ============================ Küche ============================
-Group  Kueche_Backofen          "Backofen"             (gVH_Kueche)                  ["Oven"]
-Switch Kueche_Backofen_Schalter "Backofen"             (Kueche_Backofen)          ["Switch", "Power"]
-Number:Temperature Kueche_Backofen_Soll "Temperatur [%.0f °C]" (Kueche_Backofen)  ["Setpoint", "Temperature"] { unit="°C", stateDescription=""[min="50", max="250", step="10"] }
-String Kueche_Backofen_Modus    "Betriebsart [%s]"     (Kueche_Backofen)          ["Control", "Mode"] { commandDescription=""[options="Umluft=Umluft,Oberhitze=Ober-/Unterhitze,Grill=Grill"] }
-DateTime Kueche_Backofen_Ende   "Fertig um [%1$tH:%1$tM]" (Kueche_Backofen)       ["Status", "Timestamp"]
+Group Kueche_Backofen "Backofen" (gVH_Kueche) ["Oven"]
+Switch Kueche_Backofen_Schalter "Backofen" (Kueche_Backofen) ["Switch", "Power"]
+Number:Temperature Kueche_Backofen_Soll "Temperatur [%.0f °C]" (Kueche_Backofen)
+    ["Setpoint", "Temperature"]
+    { unit="°C", stateDescription=""[min="50", max="250", step="10"] }
+String Kueche_Backofen_Modus "Betriebsart [%s]" (Kueche_Backofen) ["Control", "Mode"]
+  { commandDescription=""[options="Umluft=Umluft,Oberhitze=Ober-/Unterhitze,Grill=Grill"] }
+DateTime Kueche_Backofen_Ende "Fertig um [%1$tH:%1$tM]" (Kueche_Backofen)
+    ["Status", "Timestamp"]
 
-Group  Kueche_Herd              "Kochfeld"             (gVH_Kueche)                  ["Cooktop"]
-Number Kueche_Herd_Stufe        "Kochstufe vorn links [%d]" (Kueche_Herd)         ["Control", "Level"] { stateDescription=""[min="0", max="9", step="1"] }
+Group Kueche_Herd "Kochfeld" (gVH_Kueche) ["Cooktop"]
+Number Kueche_Herd_Stufe "Kochstufe vorn links [%d]" (Kueche_Herd)
+    ["Control", "Level"] { stateDescription=""[min="0", max="9", step="1"] }
 
-Group  Kueche_Kuehlschrank      "Kühlschrank"          (gVH_Kueche)                  ["Refrigerator"]
-Number:Temperature Kueche_Kuehlschrank_Temperatur "Innen [%.1f °C]" (Kueche_Kuehlschrank) ["Measurement", "Temperature"] { unit="°C" }
-Contact Kueche_Kuehlschrank_Tuer "Tür [%s]"            (Kueche_Kuehlschrank)      ["Status", "OpenState"]
+Group Kueche_Kuehlschrank "Kühlschrank" (gVH_Kueche) ["Refrigerator"]
+Number:Temperature Kueche_Kuehlschrank_Temperatur "Innen [%.1f °C]"
+    (Kueche_Kuehlschrank) ["Measurement", "Temperature"] { unit="°C" }
+Contact Kueche_Kuehlschrank_Tuer "Tür [%s]" (Kueche_Kuehlschrank)
+    ["Status", "OpenState"]
 
-Group  Kueche_Spuelmaschine     "Spülmaschine"         (gVH_Kueche)                  ["Dishwasher"]
-Switch Kueche_Spuelmaschine_Start "Start"              (Kueche_Spuelmaschine)     ["Switch", "Power"]
-String Kueche_Spuelmaschine_Programm "Programm [%s]"   (Kueche_Spuelmaschine)     ["Control", "Mode"] { commandDescription=""[options="Eco=Eco,Auto=Auto,Intensiv=Intensiv"] }
-Number:Time Kueche_Spuelmaschine_Rest "Restzeit [%d min]" (Kueche_Spuelmaschine)  ["Status", "Duration"] { unit="min" }
+Group Kueche_Spuelmaschine "Spülmaschine" (gVH_Kueche) ["Dishwasher"]
+Switch Kueche_Spuelmaschine_Start "Start" (Kueche_Spuelmaschine) ["Switch", "Power"]
+String Kueche_Spuelmaschine_Programm "Programm [%s]" (Kueche_Spuelmaschine)
+    ["Control", "Mode"]
+    { commandDescription=""[options="Eco=Eco,Auto=Auto,Intensiv=Intensiv"] }
+Number:Time Kueche_Spuelmaschine_Rest "Restzeit [%d min]" (Kueche_Spuelmaschine)
+    ["Status", "Duration"] { unit="min" }
 
-Group  Kueche_Rauchmelder       "Rauchmelder"          (gVH_Kueche)                  ["SmokeDetector"]
-Switch Kueche_Rauchmelder_Alarm "Rauchalarm [%s]"      (Kueche_Rauchmelder)       ["Alarm", "Smoke"]
+Group Kueche_Rauchmelder "Rauchmelder" (gVH_Kueche) ["SmokeDetector"]
+Switch Kueche_Rauchmelder_Alarm "Rauchalarm [%s]" (Kueche_Rauchmelder)
+    ["Alarm", "Smoke"]
 
 // ========================== Schlafzimmer ==========================
-Group  Schlafzimmer_Luftreiniger "Luftreiniger"        (gVH_Schlafzimmer)            ["AirFilter"]
-Switch Schlafzimmer_Luftreiniger_Schalter "Luftreiniger" (Schlafzimmer_Luftreiniger) ["Switch", "Power"]
-Number:Density Schlafzimmer_Luftreiniger_Feinstaub "Feinstaub PM2.5 [%.0f µg/m³]" (Schlafzimmer_Luftreiniger) ["Measurement", "ParticulateMatter"] { unit="µg/m³" }
+Group Schlafzimmer_Luftreiniger "Luftreiniger" (gVH_Schlafzimmer) ["AirFilter"]
+Switch Schlafzimmer_Luftreiniger_Schalter "Luftreiniger" (Schlafzimmer_Luftreiniger)
+    ["Switch", "Power"]
+Number:Density Schlafzimmer_Luftreiniger_Feinstaub "Feinstaub PM2.5 [%.0f µg/m³]"
+    (Schlafzimmer_Luftreiniger) ["Measurement", "ParticulateMatter"] { unit="µg/m³" }
 
-Group  Schlafzimmer_Klimaanlage "Klimaanlage"          (gVH_Schlafzimmer)            ["AirConditioner"]
-Switch Schlafzimmer_Klimaanlage_Schalter "Klimaanlage" (Schlafzimmer_Klimaanlage) ["Switch", "Power"]
-Number:Temperature Schlafzimmer_Klimaanlage_Soll "Solltemperatur [%.1f °C]" (Schlafzimmer_Klimaanlage) ["Setpoint", "Temperature"] { unit="°C", stateDescription=""[min="16", max="26", step="0.5"] }
-String Schlafzimmer_Klimaanlage_Modus "Modus [%s]"     (Schlafzimmer_Klimaanlage) ["Control", "Mode"] { commandDescription=""[options="Kühlen=Kühlen,Lüften=Lüften,Entfeuchten=Entfeuchten"] }
-Number:Temperature Schlafzimmer_Temperatur "Temperatur [%.1f °C]" (gVH_Schlafzimmer, gVH_Innen) ["Measurement", "Temperature"] { unit="°C" }
+Group Schlafzimmer_Klimaanlage "Klimaanlage" (gVH_Schlafzimmer) ["AirConditioner"]
+Switch Schlafzimmer_Klimaanlage_Schalter "Klimaanlage" (Schlafzimmer_Klimaanlage)
+    ["Switch", "Power"]
+Number:Temperature Schlafzimmer_Klimaanlage_Soll "Solltemperatur [%.1f °C]"
+    (Schlafzimmer_Klimaanlage) ["Setpoint", "Temperature"]
+    { unit="°C", stateDescription=""[min="16", max="26", step="0.5"] }
+String Schlafzimmer_Klimaanlage_Modus "Modus [%s]" (Schlafzimmer_Klimaanlage)
+    ["Control", "Mode"]
+  { commandDescription=""[options="Kühlen=Kühlen,Lüften=Lüften,Entfeuchten=Entfeuchten"] }
+Number:Temperature Schlafzimmer_Temperatur "Temperatur [%.1f °C]"
+    (gVH_Schlafzimmer, gVH_Innen) ["Measurement", "Temperature"] { unit="°C" }
 
-Group  Schlafzimmer_Luftbefeuchter "Luftbefeuchter"    (gVH_Schlafzimmer)            ["Humidifier"]
-Switch Schlafzimmer_Luftbefeuchter_Schalter "Luftbefeuchter" (Schlafzimmer_Luftbefeuchter) ["Switch", "Power"]
-Number:Dimensionless Schlafzimmer_Luftfeuchte "Luftfeuchte [%.0f %%]" (Schlafzimmer_Luftbefeuchter) ["Measurement", "Humidity"] { unit="%" }
+Group Schlafzimmer_Luftbefeuchter "Luftbefeuchter" (gVH_Schlafzimmer) ["Humidifier"]
+Switch Schlafzimmer_Luftbefeuchter_Schalter "Luftbefeuchter"
+    (Schlafzimmer_Luftbefeuchter) ["Switch", "Power"]
+Number:Dimensionless Schlafzimmer_Luftfeuchte "Luftfeuchte [%.0f %%]"
+    (Schlafzimmer_Luftbefeuchter) ["Measurement", "Humidity"] { unit="%" }
 
 // ============================== Bad ==============================
-Group  Bad_Waschmaschine        "Waschmaschine"        (gVH_Bad)                     ["WashingMachine"]
-Switch Bad_Waschmaschine_Start  "Start"                (Bad_Waschmaschine)        ["Switch", "Power"]
-String Bad_Waschmaschine_Status "Status [%s]"          (Bad_Waschmaschine)        ["Status", "Progress"]
-Number:Time Bad_Waschmaschine_Rest "Restzeit [%d min]" (Bad_Waschmaschine)        ["Status", "Duration"] { unit="min" }
-Number:Power Bad_Waschmaschine_Leistung "Leistung [%.0f W]" (Bad_Waschmaschine, gVH_Verbrauch) ["Measurement", "Power"] { unit="W" }
+Group Bad_Waschmaschine "Waschmaschine" (gVH_Bad) ["WashingMachine"]
+Switch Bad_Waschmaschine_Start "Start" (Bad_Waschmaschine) ["Switch", "Power"]
+String Bad_Waschmaschine_Status "Status [%s]" (Bad_Waschmaschine)
+    ["Status", "Progress"]
+Number:Time Bad_Waschmaschine_Rest "Restzeit [%d min]" (Bad_Waschmaschine)
+    ["Status", "Duration"] { unit="min" }
+Number:Power Bad_Waschmaschine_Leistung "Leistung [%.0f W]"
+    (Bad_Waschmaschine, gVH_Verbrauch) ["Measurement", "Power"] { unit="W" }
 
-Group  Bad_Trockner             "Trockner"             (gVH_Bad)                     ["Dryer"]
-Switch Bad_Trockner_Start       "Start"                (Bad_Trockner)             ["Switch", "Power"]
-String Bad_Trockner_Status      "Status [%s]"          (Bad_Trockner)             ["Status", "Progress"]
+Group Bad_Trockner "Trockner" (gVH_Bad) ["Dryer"]
+Switch Bad_Trockner_Start "Start" (Bad_Trockner) ["Switch", "Power"]
+String Bad_Trockner_Status "Status [%s]" (Bad_Trockner) ["Status", "Progress"]
 
-Group  Bad_Luftentfeuchter      "Luftentfeuchter"      (gVH_Bad)                     ["Dehumidifier"]
-Switch Bad_Luftentfeuchter_Schalter "Luftentfeuchter"  (Bad_Luftentfeuchter)      ["Switch", "Power"]
-Number:Dimensionless Bad_Luftfeuchte "Luftfeuchte [%.0f %%]" (Bad_Luftentfeuchter) ["Measurement", "Humidity"] { unit="%" }
+Group Bad_Luftentfeuchter "Luftentfeuchter" (gVH_Bad) ["Dehumidifier"]
+Switch Bad_Luftentfeuchter_Schalter "Luftentfeuchter" (Bad_Luftentfeuchter)
+    ["Switch", "Power"]
+Number:Dimensionless Bad_Luftfeuchte "Luftfeuchte [%.0f %%]" (Bad_Luftentfeuchter)
+    ["Measurement", "Humidity"] { unit="%" }
 
-Group  Bad_Wassermelder         "Wassermelder"         (gVH_Bad)                     ["LeakSensor"]
-Switch Bad_Wassermelder_Alarm   "Wasseralarm [%s]"     (Bad_Wassermelder)         ["Alarm", "Water"]
+Group Bad_Wassermelder "Wassermelder" (gVH_Bad) ["LeakSensor"]
+Switch Bad_Wassermelder_Alarm "Wasseralarm [%s]" (Bad_Wassermelder) ["Alarm", "Water"]
 
 // ============================== Diele ==============================
-Group  Diele_Praesenzmelder     "Präsenzmelder"        (gVH_Diele)                   ["OccupancySensor"]
-Switch Diele_Praesenz           "Anwesenheit [%s]"     (Diele_Praesenzmelder)     ["Status", "Presence"]
-Number Diele_Praesenz_Zonen     "Belegte Zonen [%d]"   (Diele_Praesenzmelder)     ["Measurement", "Presence"]
+Group Diele_Praesenzmelder "Präsenzmelder" (gVH_Diele) ["OccupancySensor"]
+Switch Diele_Praesenz "Anwesenheit [%s]" (Diele_Praesenzmelder) ["Status", "Presence"]
+Number Diele_Praesenz_Zonen "Belegte Zonen [%d]" (Diele_Praesenzmelder)
+    ["Measurement", "Presence"]
 
-Group  Diele_Haustuer           "Haustür"              (gVH_Diele)                   ["FrontDoor"]
-Contact Diele_Haustuer_Kontakt  "Haustür [%s]"         (Diele_Haustuer)           ["Status", "OpenState"]
-Switch Diele_Haustuer_Schloss   "Verriegelt"           (Diele_Haustuer)           ["Switch", "LockState"]
+Group Diele_Haustuer "Haustür" (gVH_Diele) ["FrontDoor"]
+Contact Diele_Haustuer_Kontakt "Haustür [%s]" (Diele_Haustuer) ["Status", "OpenState"]
+Switch Diele_Haustuer_Schloss "Verriegelt" (Diele_Haustuer) ["Switch", "LockState"]
 
-Group  Diele_Klingel            "Klingel"              (gVH_Diele)                   ["Doorbell"]
-Switch Diele_Klingel_Taster     "Klingeln"             (Diele_Klingel)            ["Switch"] { commandDescription=""[options="ON=klingeln"] }
-DateTime Diele_Klingel_Zuletzt  "Zuletzt geklingelt [%1$td.%1$tm. %1$tH:%1$tM]" (Diele_Klingel) ["Status", "Timestamp"]
-Call   Diele_Klingel_Anruf      "Türruf [%2$s an %1$s]" (Diele_Klingel)           ["Status"]
+Group Diele_Klingel "Klingel" (gVH_Diele) ["Doorbell"]
+Switch Diele_Klingel_Taster "Klingeln" (Diele_Klingel) ["Switch"]
+    { commandDescription=""[options="ON=klingeln"] }
+DateTime Diele_Klingel_Zuletzt "Zuletzt geklingelt [%1$td.%1$tm. %1$tH:%1$tM]"
+    (Diele_Klingel) ["Status", "Timestamp"]
+Call Diele_Klingel_Anruf "Türruf [%2$s an %1$s]" (Diele_Klingel) ["Status"]
 
-Group  Diele_Alarmanlage        "Alarmanlage"          (gVH_Diele)                   ["AlarmSystem"]
-String Diele_Alarmanlage_Modus  "Modus [MAP(alarm.map):%s]" (Diele_Alarmanlage)   ["Control", "Mode"] { commandDescription=""[options="aus=aus,intern=intern,extern=extern"] }
-Switch Diele_Alarmanlage_Alarm  "Alarm [%s]"           (Diele_Alarmanlage)        ["Alarm"]
+Group Diele_Alarmanlage "Alarmanlage" (gVH_Diele) ["AlarmSystem"]
+String Diele_Alarmanlage_Modus "Modus [MAP(alarm.map):%s]" (Diele_Alarmanlage)
+    ["Control", "Mode"]
+    { commandDescription=""[options="aus=aus,intern=intern,extern=extern"] }
+Switch Diele_Alarmanlage_Alarm "Alarm [%s]" (Diele_Alarmanlage) ["Alarm"]
 
 // ============================ Technikraum ============================
-Group  Technik_Waermepumpe      "Wärmepumpe"           (gVH_Technik)                 ["HeatPump"]
-Number:Power Technik_Waermepumpe_Leistung "Leistungsaufnahme [%.0f W]" (Technik_Waermepumpe, gVH_Verbrauch) ["Measurement", "Power"] { unit="W" }
-Number:Temperature Technik_Waermepumpe_Vorlauf "Vorlauf [%.1f °C]" (Technik_Waermepumpe) ["Measurement", "Temperature"] { unit="°C" }
-Number Technik_Waermepumpe_COP  "Leistungszahl COP [%.2f]" (Technik_Waermepumpe)  ["Calculation", "Energy"]
+Group Technik_Waermepumpe "Wärmepumpe" (gVH_Technik) ["HeatPump"]
+Number:Power Technik_Waermepumpe_Leistung "Leistungsaufnahme [%.0f W]"
+    (Technik_Waermepumpe, gVH_Verbrauch) ["Measurement", "Power"] { unit="W" }
+Number:Temperature Technik_Waermepumpe_Vorlauf "Vorlauf [%.1f °C]"
+    (Technik_Waermepumpe) ["Measurement", "Temperature"] { unit="°C" }
+Number Technik_Waermepumpe_COP "Leistungszahl COP [%.2f]" (Technik_Waermepumpe)
+    ["Calculation", "Energy"]
 
-Group  Technik_Smartmeter       "Smart Meter"          (gVH_Technik)                 ["ElectricMeter"]
-Number:Power Technik_Smartmeter_Netz "Netzbezug (−: Einspeisung) [%.0f W]" (Technik_Smartmeter) ["Measurement", "Power"] { unit="W" }
-Number:Energy Technik_Smartmeter_Zaehler "Zählerstand [%.1f kWh]" (Technik_Smartmeter) ["Measurement", "Energy"] { unit="kWh" }
+Group Technik_Smartmeter "Smart Meter" (gVH_Technik) ["ElectricMeter"]
+Number:Power Technik_Smartmeter_Netz "Netzbezug (−: Einspeisung) [%.0f W]"
+    (Technik_Smartmeter) ["Measurement", "Power"] { unit="W" }
+Number:Energy Technik_Smartmeter_Zaehler "Zählerstand [%.1f kWh]" (Technik_Smartmeter)
+    ["Measurement", "Energy"] { unit="kWh" }
 
-Group  Technik_Wasserzaehler    "Wasserzähler"         (gVH_Technik)                 ["WaterMeter"]
-Number:Volume Technik_Wasserzaehler_Stand "Zählerstand [%.3f m³]" (Technik_Wasserzaehler) ["Measurement", "Water"] { unit="m³" }
+Group Technik_Wasserzaehler "Wasserzähler" (gVH_Technik) ["WaterMeter"]
+Number:Volume Technik_Wasserzaehler_Stand "Zählerstand [%.3f m³]"
+    (Technik_Wasserzaehler) ["Measurement", "Water"] { unit="m³" }
 
-Group  Technik_PV               "PV-Anlage"            (gVH_Technik)                 ["SolarPanel"]
-Number:Power Technik_PV_Leistung "Erzeugung [%.0f W]"  (Technik_PV)               ["Measurement", "Power"] { unit="W" }
-Number:Energy Technik_PV_Heute  "Heute [%.2f kWh]"     (Technik_PV)               ["Measurement", "Energy"] { unit="kWh" }
+Group Technik_PV "PV-Anlage" (gVH_Technik) ["SolarPanel"]
+Number:Power Technik_PV_Leistung "Erzeugung [%.0f W]" (Technik_PV)
+    ["Measurement", "Power"] { unit="W" }
+Number:Energy Technik_PV_Heute "Heute [%.2f kWh]" (Technik_PV)
+    ["Measurement", "Energy"] { unit="kWh" }
 
 // ============================== Garage ==============================
-Group  Garage_Tor               "Garagentor"           (gVH_Garage)                  ["GarageDoor"]
-Rollershutter Garage_Tor_Position "Garagentor [%d %%]" (Garage_Tor, gVH_Rolllaeden)  ["Control", "OpenLevel"] { autoupdate="false" }
+Group Garage_Tor "Garagentor" (gVH_Garage) ["GarageDoor"]
+Rollershutter Garage_Tor_Position "Garagentor [%d %%]" (Garage_Tor, gVH_Rolllaeden)
+    ["Control", "OpenLevel"] { autoupdate="false" }
 
-Group  Garage_Wallbox           "Wallbox"              (gVH_Garage)                  ["EVSE"]
-Switch Garage_Wallbox_Laden     "Laden"                (Garage_Wallbox)           ["Switch", "Power"]
-Number:ElectricCurrent Garage_Wallbox_Strom "Ladestrom [%.0f A]" (Garage_Wallbox)  ["Setpoint", "Current"] { unit="A", stateDescription=""[min="6", max="16", step="1"] }
-Number:Power Garage_Wallbox_Leistung "Ladeleistung [%.1f kW]" (Garage_Wallbox, gVH_Verbrauch) ["Measurement", "Power"] { unit="W" }
+Group Garage_Wallbox "Wallbox" (gVH_Garage) ["EVSE"]
+Switch Garage_Wallbox_Laden "Laden" (Garage_Wallbox) ["Switch", "Power"]
+Number:ElectricCurrent Garage_Wallbox_Strom "Ladestrom [%.0f A]" (Garage_Wallbox)
+    ["Setpoint", "Current"]
+    { unit="A", stateDescription=""[min="6", max="16", step="1"] }
+Number:Power Garage_Wallbox_Leistung "Ladeleistung [%.1f kW]"
+    (Garage_Wallbox, gVH_Verbrauch) ["Measurement", "Power"] { unit="W" }
 
-Group  Garage_Auto              "E-Auto"               (gVH_Garage)                  ["Car"]
-Number:Dimensionless Garage_Auto_Ladestand "Ladestand [%.0f %%]" (Garage_Auto)    ["Measurement", "StateOfCharge"] { unit="%" }
-Number:Length Garage_Auto_Reichweite "Reichweite [%.0f km]" (Garage_Auto)         ["Measurement"] { unit="km" }
-Location Garage_Auto_Position   "Position [%2$s°N %3$s°E]" (Garage_Auto)          ["Status", "GeoLocation"]
+Group Garage_Auto "E-Auto" (gVH_Garage) ["Car"]
+Number:Dimensionless Garage_Auto_Ladestand "Ladestand [%.0f %%]" (Garage_Auto)
+    ["Measurement", "StateOfCharge"] { unit="%" }
+Number:Length Garage_Auto_Reichweite "Reichweite [%.0f km]" (Garage_Auto)
+    ["Measurement"] { unit="km" }
+Location Garage_Auto_Position "Position [%2$s°N %3$s°E]" (Garage_Auto)
+    ["Status", "GeoLocation"]
 
 // ============================== Garten ==============================
-Number:Temperature Garten_Temperatur "Außentemperatur [%.1f °C]" (gVH_Garten)        ["Measurement", "Temperature"] { unit="°C" }
-Group  Garten_Wetterstation     "Wetterstation"        (gVH_Garten)                  ["WeatherStation"]
-Number:Speed Garten_Wind        "Wind [%.1f km/h]"     (Garten_Wetterstation)     ["Measurement", "Wind"] { unit="km/h" }
-Number:Length Garten_Regen      "Regen heute [%.1f mm]" (Garten_Wetterstation)    ["Measurement", "Rain"] { unit="mm" }
+Number:Temperature Garten_Temperatur "Außentemperatur [%.1f °C]" (gVH_Garten)
+    ["Measurement", "Temperature"] { unit="°C" }
+Group Garten_Wetterstation "Wetterstation" (gVH_Garten) ["WeatherStation"]
+Number:Speed Garten_Wind "Wind [%.1f km/h]" (Garten_Wetterstation)
+    ["Measurement", "Wind"] { unit="km/h" }
+Number:Length Garten_Regen "Regen heute [%.1f mm]" (Garten_Wetterstation)
+    ["Measurement", "Rain"] { unit="mm" }
 
-Group  Garten_Maehroboter       "Mähroboter"           (gVH_Garten)                  ["LawnMower"]
-Switch Garten_Maehroboter_Start "Mähen"                (Garten_Maehroboter)       ["Switch"]
-String Garten_Maehroboter_Status "Status [%s]"         (Garten_Maehroboter)       ["Status", "Progress"]
-Number:Dimensionless Garten_Maehroboter_Akku "Akku [%.0f %%]" (Garten_Maehroboter) ["Measurement", "Level"] { unit="%" }
-Location Garten_Maehroboter_Position "Position"        (Garten_Maehroboter)       ["Status", "GeoLocation"]
+Group Garten_Maehroboter "Mähroboter" (gVH_Garten) ["LawnMower"]
+Switch Garten_Maehroboter_Start "Mähen" (Garten_Maehroboter) ["Switch"]
+String Garten_Maehroboter_Status "Status [%s]" (Garten_Maehroboter)
+    ["Status", "Progress"]
+Number:Dimensionless Garten_Maehroboter_Akku "Akku [%.0f %%]" (Garten_Maehroboter)
+    ["Measurement", "Level"] { unit="%" }
+Location Garten_Maehroboter_Position "Position" (Garten_Maehroboter)
+    ["Status", "GeoLocation"]
 
-Group  Garten_Sprinkler         "Sprinkleranlage"      (gVH_Garten)                  ["Irrigation"]
-Switch Garten_Sprinkler_Zone1   "Zone Rasen"           (Garten_Sprinkler)         ["Switch", "Water"]
-Number:Time Garten_Sprinkler_Dauer "Laufzeit [%d min]" (Garten_Sprinkler)         ["Setpoint", "Duration"] { unit="min", stateDescription=""[min="5", max="60", step="5"] }
+Group Garten_Sprinkler "Sprinkleranlage" (gVH_Garten) ["Irrigation"]
+Switch Garten_Sprinkler_Zone1 "Zone Rasen" (Garten_Sprinkler) ["Switch", "Water"]
+Number:Time Garten_Sprinkler_Dauer "Laufzeit [%d min]" (Garten_Sprinkler)
+    ["Setpoint", "Duration"]
+    { unit="min", stateDescription=""[min="5", max="60", step="5"] }
 
 // ==================== Saug- und Wischroboter (Erdgeschoss) ====================
-Group  Haus_Saugroboter         "Saug- und Wischroboter" (gVH_Haus)                  ["CleaningRobot"]
-Switch Haus_Saugroboter_Start   "Reinigen"             (Haus_Saugroboter)         ["Switch"]
-String Haus_Saugroboter_Status  "Status [%s]"          (Haus_Saugroboter)         ["Status", "Progress"]
-Number:Dimensionless Haus_Saugroboter_Akku "Akku [%.0f %%]" (Haus_Saugroboter)    ["Measurement", "Level"] { unit="%" }
-Image  Haus_Saugroboter_Karte   "Karte"                (Haus_Saugroboter)         ["Status"]
+Group Haus_Saugroboter "Saug- und Wischroboter" (gVH_Haus) ["CleaningRobot"]
+Switch Haus_Saugroboter_Start "Reinigen" (Haus_Saugroboter) ["Switch"]
+String Haus_Saugroboter_Status "Status [%s]" (Haus_Saugroboter) ["Status", "Progress"]
+Number:Dimensionless Haus_Saugroboter_Akku "Akku [%.0f %%]" (Haus_Saugroboter)
+    ["Measurement", "Level"] { unit="%" }
+Image Haus_Saugroboter_Karte "Karte" (Haus_Saugroboter) ["Status"]
