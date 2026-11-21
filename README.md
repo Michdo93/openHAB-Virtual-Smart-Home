@@ -88,6 +88,12 @@ Bei einer manuellen Installation liegen die Ordner unter `openhab/conf/` statt
 `/etc/openhab/`. Die Sitemap heißt `virtuelles_haus`
 (`http://openhab:8080/basicui/app?sitemap=virtuelles_haus`).
 
+## Unterstützen
+
+Wenn Ihnen dieses Projekt hilft, freue ich mich über einen Kaffee:
+
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?logo=buymeacoffee&logoColor=black)](https://buymeacoffee.com/Michdo93)
+
 ## Lizenz
 
 MIT – siehe [LICENSE](LICENSE).
