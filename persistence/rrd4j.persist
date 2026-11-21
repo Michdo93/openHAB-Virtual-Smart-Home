@@ -1,4 +1,5 @@
-// RRD4j: Zahlenwerte jede Minute und bei jeder Änderung; Zustände nach Neustart wiederherstellen
+// RRD4j: Zahlenwerte jede Minute und bei jeder Änderung speichern,
+// Zustände nach einem Neustart wiederherstellen
 Strategies {
     everyMinute : "0 * * * * ?"
 }
